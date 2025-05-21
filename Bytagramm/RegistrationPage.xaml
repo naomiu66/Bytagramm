@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Bytagramm.RegistrationPage"
+             xmlns:viewmodel="clr-namespace:Bytagramm.ViewModels"
+             x:DataType="viewmodel:RegistrationViewModel"
+             Title="RegistrationPage">
+
+
+    <Grid RowDefinitions="Auto, Auto, Auto, Auto"
+      ColumnDefinitions="*, *"
+      Padding="20"
+      RowSpacing="10">
+
+        <Label Text="Username:" Grid.Row="0" Grid.Column="0" VerticalTextAlignment="Center"/>
+        <Entry Text="{Binding Username}" Grid.Row="0" Grid.Column="1"/>
+
+        <Label Text="Password:" Grid.Row="1" Grid.Column="0" VerticalTextAlignment="Center"/>
+        <Entry x:Name="PasswordEntry" 
+           Text="{Binding Password}" 
+           IsPassword="{Binding IsPassword}" 
+           Grid.Row="1" Grid.Column="1"/>
+
+        <Label Text="Show Password" Grid.Row="2" Grid.Column="0" VerticalTextAlignment="Center"/>
+        <CheckBox Grid.Row="2" Grid.Column="1" 
+              IsChecked="{Binding ShowPassword}"/>
+
+        <Button Text="Register"
+            Grid.Row="3" Grid.ColumnSpan="2"
+            Command="{Binding RegisterCommand}"/>
+    </Grid>
+
+
+
+</ContentPage>
