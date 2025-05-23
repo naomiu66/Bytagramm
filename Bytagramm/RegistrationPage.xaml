@@ -7,28 +7,82 @@
              Title="RegistrationPage">
 
 
-    <Grid RowDefinitions="Auto, Auto, Auto, Auto"
-      ColumnDefinitions="*, *"
-      Padding="20"
-      RowSpacing="10">
+    <ScrollView>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <Label Text="Username:" Grid.Row="0" Grid.Column="0" VerticalTextAlignment="Center"/>
-        <Entry Text="{Binding Username}" Grid.Row="0" Grid.Column="1"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-        <Label Text="Password:" Grid.Row="1" Grid.Column="0" VerticalTextAlignment="Center"/>
-        <Entry x:Name="PasswordEntry" 
-           Text="{Binding Password}" 
-           IsPassword="{Binding IsPassword}" 
-           Grid.Row="1" Grid.Column="1"/>
+            <Frame Grid.Row="1"
+                   Grid.Column="1"
+                   BackgroundColor="White"
+                   CornerRadius="20"
+                   Padding="30"
+                   WidthRequest="320"
+                   HasShadow="True"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center">
 
-        <Label Text="Show Password" Grid.Row="2" Grid.Column="0" VerticalTextAlignment="Center"/>
-        <CheckBox Grid.Row="2" Grid.Column="1" 
-              IsChecked="{Binding ShowPassword}"/>
+                <VerticalStackLayout Spacing="20"
+                                     HorizontalOptions="Fill"
+                                     VerticalOptions="Center">
 
-        <Button Text="Register"
-            Grid.Row="3" Grid.ColumnSpan="2"
-            Command="{Binding RegisterCommand}"/>
-    </Grid>
+                    <!-- App title -->
+                    <Label Text="Bytagramm"
+                           FontSize="32"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="#333"/>
+
+                    <!-- Username -->
+                    <Entry Placeholder="Username"
+                           Text="{Binding Username}"
+                           FontSize="16"
+                           BackgroundColor="#F9F9F9"
+                           TextColor="#000"
+                           PlaceholderColor="#888"
+                           HeightRequest="50"
+                           HorizontalOptions="FillAndExpand"/>
+
+                    <!-- Password -->
+                    <Entry Placeholder="Password"
+                           Text="{Binding Password}"
+                           IsPassword="{Binding IsPassword}"
+                           FontSize="16"
+                           BackgroundColor="#F9F9F9"
+                           TextColor="#000"
+                           PlaceholderColor="#888"
+                           HeightRequest="50"
+                           HorizontalOptions="FillAndExpand"/>
+
+                    <!-- Show password toggle -->
+                    <HorizontalStackLayout VerticalOptions="Center" Spacing="10">
+                        <CheckBox IsChecked="{Binding ShowPassword}"/>
+                        <Label Text="Show password" VerticalTextAlignment="Center"/>
+                    </HorizontalStackLayout>
+
+                    <!-- Register button -->
+                    <Button Text="Register"
+                            Command="{Binding RegisterCommand}"
+                            BackgroundColor="#FF4500"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            HeightRequest="50"
+                            CornerRadius="10"
+                            HorizontalOptions="FillAndExpand"/>
+                </VerticalStackLayout>
+
+            </Frame>
+        </Grid>
+    </ScrollView>
 
 
 

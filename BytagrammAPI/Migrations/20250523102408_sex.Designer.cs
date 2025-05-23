@@ -3,6 +3,7 @@ using System;
 using BytagrammAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BytagrammAPI.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20250523102408_sex")]
+    partial class sex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,8 +47,6 @@ namespace BytagrammAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
-
                     b.ToTable("Communities");
                 });
 
@@ -59,7 +60,6 @@ namespace BytagrammAPI.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("CommunityId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Content")
@@ -278,32 +278,6 @@ namespace BytagrammAPI.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Subscribers", b =>
-                {
-                    b.Property<string>("CommunityId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.HasKey("CommunityId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Subscribers");
-                });
-
-            modelBuilder.Entity("BytagrammAPI.Models.Community", b =>
-                {
-                    b.HasOne("BytagrammAPI.Models.User", "Author")
-                        .WithMany("OwnedCommunities")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Author");
-                });
-
             modelBuilder.Entity("BytagrammAPI.Models.Post", b =>
                 {
                     b.HasOne("BytagrammAPI.Models.User", "Author")
@@ -312,15 +286,11 @@ namespace BytagrammAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BytagrammAPI.Models.Community", "Community")
+                    b.HasOne("BytagrammAPI.Models.Community", null)
                         .WithMany("Posts")
-                        .HasForeignKey("CommunityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CommunityId");
 
                     b.Navigation("Author");
-
-                    b.Navigation("Community");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -374,21 +344,6 @@ namespace BytagrammAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Subscribers", b =>
-                {
-                    b.HasOne("BytagrammAPI.Models.Community", null)
-                        .WithMany()
-                        .HasForeignKey("CommunityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BytagrammAPI.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("BytagrammAPI.Models.Community", b =>
                 {
                     b.Navigation("Posts");
@@ -396,8 +351,6 @@ namespace BytagrammAPI.Migrations
 
             modelBuilder.Entity("BytagrammAPI.Models.User", b =>
                 {
-                    b.Navigation("OwnedCommunities");
-
                     b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618

@@ -10,6 +10,10 @@ namespace BytagrammAPI.Models
         public string Title { get; set; }
 
         public string AuthorId { get; set; }
+        public User Author { get; set; }
+
+        public Community Community { get; set; }
+        public string CommunityId { get; set; }
 
         public string Content { get; set; }
 

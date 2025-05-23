@@ -46,6 +46,7 @@ namespace BytagrammAPI.Controllers
                 Title = dto.Title,
                 Content = dto.Content,
                 AuthorId = dto.AuthorId,
+                CommunityId = dto.CommunityId,
                 CreatedDate = DateTime.UtcNow
             };
 
@@ -66,6 +67,7 @@ namespace BytagrammAPI.Controllers
             post.Title = dto.Title ?? post.Title;
             post.Content = dto.Content ?? post.Content;
             post.AuthorId = dto.AuthorId ?? post.AuthorId;
+            post.CommunityId = dto.CommunityId ?? post.CommunityId;
                 
             await _postService.UpdateAsync(post);
             return Ok(post);
