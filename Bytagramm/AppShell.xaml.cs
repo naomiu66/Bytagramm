@@ -24,7 +24,7 @@ namespace Bytagramm
             if (loggedIn)
                 await Shell.Current.GoToAsync($"///{nameof(HomePage)}");
             else
-                await Shell.Current.GoToAsync($"///{nameof(LoginPage)}");
+                await Shell.Current.GoToAsync($"///{nameof(MainPage)}");
         }
 
         protected override async void OnAppearing()

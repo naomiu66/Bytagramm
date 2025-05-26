@@ -73,11 +73,29 @@
                     <HorizontalStackLayout VerticalOptions="Center" Spacing="10">
                         <CheckBox IsChecked="{Binding ShowPassword}" />
                         <Label Text="Show password"
-                        TextColor="#000"
-                        VerticalTextAlignment="Center"
-                        HorizontalOptions="Start"
-                        WidthRequest="120" />
+                            TextColor="#000"
+                            VerticalTextAlignment="Center"
+                            HorizontalOptions="Start"
+                            WidthRequest="120" />
                     </HorizontalStackLayout>
+
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Start">
+                        <Label Text="If you are new here"
+                           FontSize="12"
+                           FontAttributes="None"
+                           VerticalOptions="Center"
+                           TextColor="#333" />
+
+                        <Button Text="Sign in"
+                            Command="{Binding SigninCommand}"
+                            FontSize="12"
+                            Padding="4,0"
+                            Margin="8,0,0,0"
+                            HeightRequest="24"
+                            VerticalOptions="Center"
+                            BackgroundColor="Transparent"
+                            TextColor="#007AFF"/>
+                    </StackLayout>
 
                     <!-- Register button -->
                     <Button Text="Log In"
@@ -88,6 +106,7 @@
                          HeightRequest="50"
                          CornerRadius="10"
                          HorizontalOptions="FillAndExpand"/>
+                    
                 </VerticalStackLayout>
 
             </Frame>

@@ -34,7 +34,11 @@ namespace Bytagramm.ViewModels
             IsPassword = !value;
         }
 
-
+        [RelayCommand]
+        private async Task Login() 
+        {
+            await Shell.Current.GoToAsync($"///{nameof(LoginPage)}");
+        }
 
         [RelayCommand]
         private async Task Register() 

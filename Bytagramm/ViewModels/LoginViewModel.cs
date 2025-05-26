@@ -34,6 +34,12 @@ namespace Bytagramm.ViewModels
 
 
         [RelayCommand]
+        private async Task Signin() 
+        {
+            await Shell.Current.GoToAsync($"///{nameof(RegistrationPage)}");
+        }
+
+        [RelayCommand]
         private async Task Login() 
         {
             if (string.IsNullOrWhiteSpace(UsernameOrEmail) || string.IsNullOrWhiteSpace(Password))
