@@ -4,9 +4,10 @@ namespace Bytagramm;
 
 public partial class CommunitiesPage : ContentPage
 {
-	public CommunitiesPage(CommunitiesViewModel viewModel)
+	public CommunitiesPage()
 	{
 		InitializeComponent();
-		BindingContext = viewModel;
+        var viewModel = MauiProgram.Current.GetService<CommunitiesViewModel>();
+        BindingContext = viewModel;
     }
 }

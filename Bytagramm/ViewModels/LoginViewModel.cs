@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Maui.ApplicationModel.Communication;
+using System.Diagnostics;
 
 namespace Bytagramm.ViewModels
 {
@@ -42,14 +43,21 @@ namespace Bytagramm.ViewModels
             }
 
             var success = await _userApiService.AuthenticateAsync(UsernameOrEmail, Password);
-
-            if(success) 
+            
+            if(success)
             {
+                try
+                {
 #if DEBUG
-                await Shell.Current.DisplayAlert("Success", "User logged in", "OK");
+                    await Shell.Current.DisplayAlert("Success", "User logged in", "OK");
 #endif
-                await SecureStorage.GetAsync("auth_token");
-                await Shell.Current.GoToAsync(nameof(HomePage));
+                    await Shell.Current.GoToAsync($"///{nameof(HomePage)}");
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"[Login] Ошибка: {ex.Message}");
+                    await Application.Current.MainPage.DisplayAlert("Ошибка", ex.Message, "ОК");
+                }
             }
             else 
             {

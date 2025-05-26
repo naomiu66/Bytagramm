@@ -5,9 +5,10 @@ namespace Bytagramm
 
 	public partial class LoginPage : ContentPage
 	{
-		public LoginPage(LoginViewModel viewModel)
+		public LoginPage()
 		{
 			InitializeComponent();
+			var viewModel = MauiProgram.Current.GetService<LoginViewModel>();
 			BindingContext = viewModel;
 		}
 	}

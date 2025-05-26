@@ -1,15 +1,19 @@
-﻿namespace Bytagramm
+﻿using Bytagramm.Services;
+
+namespace Bytagramm
 {
     public partial class App : Application
     {
-        public App()
+        private readonly UserApiService _userApiService;
+        public App(UserApiService userApiService)
         {
             InitializeComponent();
+            _userApiService = userApiService;
         }
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            return new Window(new AppShell());
+            return new Window(new AppShell(_userApiService));
         }
     }
 }

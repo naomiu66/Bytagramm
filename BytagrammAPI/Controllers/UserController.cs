@@ -2,21 +2,25 @@
 using BytagrammAPI.Models;
 using BytagrammAPI.Services.Abstractions;
 using BytagrammAPI.Services.Implementations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BytagrammAPI.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
         private readonly IAuthService _authService;
+        private readonly IJwtService _jwtService;
 
-        public UserController(IUserService userService, IAuthService authService)
+        public UserController(IUserService userService, IAuthService authService, IJwtService jwtService)
         {
             _userService = userService;
             _authService = authService;
+            _jwtService = jwtService;
         }
 
         [HttpGet]
@@ -45,6 +49,7 @@ namespace BytagrammAPI.Controllers
             return Ok(user);
         }
 
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> CreateUser([FromBody] RegisterDto dto)
         {
@@ -58,21 +63,36 @@ namespace BytagrammAPI.Controllers
 
             var createdUser = await _userService.GetByUsernameAsync(dto.UserName);
 
-            return CreatedAtAction(nameof(GetUserById), new { id = createdUser.Id }, createdUser);
+            var token = _jwtService.GenerateToken(createdUser.Id, createdUser.UserName);
+
+
+            return Ok(new 
+            {
+                Token = token,
+                User = new 
+                {
+                    createdUser.Id,
+                    createdUser.UserName,
+                    createdUser.Email
+                }
+            });
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
             if (dto == null)
                 return BadRequest("Invalid data");
 
-            var userDto = await _authService.LoginAsync(dto);
+            var user = await _authService.LoginAsync(dto);
 
-            if (userDto == null)
+            if (user == null)
                 return Unauthorized("Invalid credentials");
 
-            return Ok(userDto);
+            var token = _jwtService.GenerateToken(user.Id, user.UserName);
+
+            return Ok(new {Token = token, User = new { user.Id, user.UserName, user.Email } });
         }
 
         [HttpPut("{id}")]

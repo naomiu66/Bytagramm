@@ -17,7 +17,7 @@ namespace BytagrammAPI.Services.Implementations
             _userManager = userManager;
         }
 
-        public async Task<UserDto?> LoginAsync(LoginDto loginDto)
+        public async Task<User?> LoginAsync(LoginDto loginDto)
         {
             var user = await _userRepository.GetByUsernameOrEmailAsync(loginDto.Identifier);
 
@@ -26,14 +26,7 @@ namespace BytagrammAPI.Services.Implementations
             bool passwordValid = await _userManager.CheckPasswordAsync(user, loginDto.Password);
             if (!passwordValid) return null;
 
-            var userDto = new UserDto
-            {
-                Id = user.Id,
-                UserName = user.UserName,
-                Email = user.Email,
-            };
-
-            return userDto;
+            return user;
         }
     }
 }

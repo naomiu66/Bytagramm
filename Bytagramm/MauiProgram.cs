@@ -3,20 +3,26 @@ using Microsoft.Extensions.Logging;
 using Bytagramm.Services;
 using Microsoft.Extensions.Configuration;
 using Bytagramm.Settings;
+using System.Reflection;
+using System.Diagnostics;
 
 
 namespace Bytagramm
 {
     public static class MauiProgram
     {
+        public static IServiceProvider Current { get; private set; }
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
 
+            var assembly = Assembly.GetExecutingAssembly();
+            using var stream = assembly.GetManifestResourceStream("Bytagramm.appsettings.json");
+            if (stream == null)
+                throw new FileNotFoundException("Could not find embedded resource: appsettings.json");
 
-            IConfigurationRoot config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .AddEnvironmentVariables()
+            var config = new ConfigurationBuilder()
+                .AddJsonStream(stream)
                 .Build();
 
             builder.Configuration.AddConfiguration(config);
@@ -68,7 +74,11 @@ namespace Bytagramm
             builder.Logging.AddDebug();
 #endif
 
-            return builder.Build();
+            var app = builder.Build();
+
+            Current = app.Services;
+
+            return app;
         }
     }
 }

@@ -67,8 +67,7 @@ namespace Bytagramm.ViewModels
                 await Shell.Current.DisplayAlert("Success", "User has been created!", "ОК");
 #endif
                 string token = Guid.NewGuid().ToString();
-                await SecureStorage.SetAsync("auth_token", token);
-                await Shell.Current.GoToAsync(nameof(HomePage));
+                await Shell.Current.GoToAsync($"///{nameof(HomePage)}");
             }
             else
             {
