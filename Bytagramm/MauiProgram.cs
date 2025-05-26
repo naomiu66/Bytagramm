@@ -37,6 +37,16 @@ namespace Bytagramm
                 client.BaseAddress = new Uri(settings.Path);
             });
 
+            builder.Services.AddHttpClient<PostApiService>(client =>
+            {
+                client.BaseAddress = new Uri(settings.Path);
+            });
+
+            builder.Services.AddHttpClient<CommunityApiService>(client =>
+            {
+                client.BaseAddress = new Uri(settings.Path);
+            });
+
 
             //Pages
             builder.Services.AddSingleton<MainPage>();
@@ -48,8 +58,14 @@ namespace Bytagramm
             builder.Services.AddTransient<RegistrationPage>();
             builder.Services.AddTransient<RegistrationViewModel>();
 
+            builder.Services.AddTransient<HomePage>();
+            builder.Services.AddTransient<HomeViewModel>();
+
+            builder.Services.AddTransient<CommunitiesPage>();
+            builder.Services.AddTransient<CommunitiesViewModel>();
+
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

@@ -1,5 +1,7 @@
 ﻿using BytagrammAPI.Dto;
+using BytagrammAPI.Models;
 using BytagrammAPI.Services.Abstractions;
+using BytagrammAPI.Services.Implementations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BytagrammAPI.Controllers
@@ -9,10 +11,12 @@ namespace BytagrammAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IAuthService _authService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IAuthService authService)
         {
             _userService = userService;
+            _authService = authService;
         }
 
         [HttpGet]
@@ -41,47 +45,50 @@ namespace BytagrammAPI.Controllers
             return Ok(user);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] UserDto dto)
+        [HttpPost("register")]
+        public async Task<IActionResult> CreateUser([FromBody] RegisterDto dto)
         {
             if (dto == null)
-            {
-                return BadRequest();
-            }
+                return BadRequest("Invalid data");
 
-            var user = new Models.User
-            {
-                Id = Guid.NewGuid().ToString(),
-                UserName = dto.UserName,
-                Email = dto.Email,
-            };
+            var result = await _userService.CreateUserAsync(dto, dto.Password);
 
-            await _userService.AddAsync(user);
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
 
-            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
+            var createdUser = await _userService.GetByUsernameAsync(dto.UserName);
+
+            return CreatedAtAction(nameof(GetUserById), new { id = createdUser.Id }, createdUser);
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginDto dto)
+        {
+            if (dto == null)
+                return BadRequest("Invalid data");
+
+            var userDto = await _authService.LoginAsync(dto);
+
+            if (userDto == null)
+                return Unauthorized("Invalid credentials");
+
+            return Ok(userDto);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(string id, [FromBody] UserDto dto)
         {
             if (dto == null)
-            {
                 return BadRequest();
-            }
 
             var user = await _userService.GetByIdAsync(id);
-
             if (user == null)
-            {
                 return NotFound();
-            }
 
             user.UserName = dto.UserName ?? user.UserName;
-            user.PasswordHash = dto.Password ?? user.PasswordHash;
             user.Email = dto.Email ?? user.Email;
 
             await _userService.UpdateAsync(user);
-
             return NoContent();
         }
 
@@ -89,14 +96,10 @@ namespace BytagrammAPI.Controllers
         public async Task<IActionResult> DeleteUser(string id)
         {
             var user = await _userService.GetByIdAsync(id);
-
             if (user == null)
-            {
                 return NotFound();
-            }
 
             await _userService.DeleteAsync(id);
-
             return NoContent();
         }
     }

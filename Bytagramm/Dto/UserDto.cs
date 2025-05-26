@@ -1,6 +1,4 @@
-﻿
-
-namespace Bytagramm.Dto
+﻿namespace Bytagramm.Dto
 {
     public class UserDto
     {

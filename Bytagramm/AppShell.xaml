@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:Bytagramm"
     Shell.FlyoutBehavior="Flyout"
     Title="Bytagramm">
+    <!-- Shell.FlyoutBehavior="Disabled" -->
 
     <ShellContent
         Title="Home"
@@ -18,6 +19,14 @@
     <ShellContent
         Title="Login"
         ContentTemplate="{DataTemplate local:LoginPage}"
-        Route="LoginPage" /> 
+        Route="LoginPage" />
+    <ShellContent
+        Title="Home"
+        ContentTemplate="{DataTemplate local:HomePage}"
+        Route="HomePage" />
+    <ShellContent
+        Title="Communities"
+        ContentTemplate="{DataTemplate local:CommunitiesPage}"
+        Route="CommunitiesPage" />
 
 </Shell>

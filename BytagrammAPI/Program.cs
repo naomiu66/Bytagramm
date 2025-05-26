@@ -1,9 +1,11 @@
 
 using BytagrammAPI.Data;
+using BytagrammAPI.Models;
 using BytagrammAPI.Repositories.Abstractions;
 using BytagrammAPI.Repositories.Implementations;
 using BytagrammAPI.Services.Abstractions;
 using BytagrammAPI.Services.Implementations;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace BytagrammAPI
@@ -19,6 +21,21 @@ namespace BytagrammAPI
 
             // Add services to the container.
 
+            builder.Services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationContext>()
+                .AddDefaultTokenProviders();
+
+#if DEBUG            
+                builder.Services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 4;
+            });
+#endif
+
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
 
@@ -27,6 +44,8 @@ namespace BytagrammAPI
 
             builder.Services.AddScoped<ICommunityRepository, CommunityRepository>();
             builder.Services.AddScoped<ICommunityService, CommunityService>();
+
+            builder.Services.AddScoped<IAuthService, AuthService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

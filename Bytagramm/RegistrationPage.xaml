@@ -42,9 +42,26 @@
                            HorizontalOptions="Center"
                            TextColor="#333"/>
 
+                    <!-- SignIn title -->
+                    <Label Text="Sign In"
+                           FontSize="30"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="#333"/>   
+
                     <!-- Username -->
                     <Entry Placeholder="Username"
                            Text="{Binding Username}"
+                           FontSize="16"
+                           BackgroundColor="#F9F9F9"
+                           TextColor="#000"
+                           PlaceholderColor="#888"
+                           HeightRequest="50"
+                           HorizontalOptions="FillAndExpand"/>
+
+                    <!-- Email -->
+                    <Entry Placeholder="Email"
+                           Text="{Binding Mail}"
                            FontSize="16"
                            BackgroundColor="#F9F9F9"
                            TextColor="#000"
@@ -65,12 +82,16 @@
 
                     <!-- Show password toggle -->
                     <HorizontalStackLayout VerticalOptions="Center" Spacing="10">
-                        <CheckBox IsChecked="{Binding ShowPassword}"/>
-                        <Label Text="Show password" VerticalTextAlignment="Center"/>
+                        <CheckBox IsChecked="{Binding ShowPassword}" />
+                        <Label Text="Show password"
+                           TextColor="#000"
+                           VerticalTextAlignment="Center"
+                           HorizontalOptions="Start"
+                           WidthRequest="120" />    
                     </HorizontalStackLayout>
 
                     <!-- Register button -->
-                    <Button Text="Register"
+                    <Button Text="Sign In"
                             Command="{Binding RegisterCommand}"
                             BackgroundColor="#FF4500"
                             TextColor="White"

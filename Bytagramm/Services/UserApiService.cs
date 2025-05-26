@@ -1,6 +1,4 @@
-﻿
-
-using Bytagramm.Dto;
+﻿using Bytagramm.Dto;
 using System.Net.Http.Json;
 
 namespace Bytagramm.Services
@@ -24,9 +22,9 @@ namespace Bytagramm.Services
             return await _httpClient.GetFromJsonAsync<UserDto>($"api/User/{id}");
         }
 
-        public async Task<bool> CreateAsync(UserDto user) 
+        public async Task<bool> CreateAsync(RegisterDto user) 
         {
-            var response = await _httpClient.PostAsJsonAsync<UserDto>("api/User", user);
+            var response = await _httpClient.PostAsJsonAsync<RegisterDto>("api/User/register", user);
             return response.IsSuccessStatusCode;
         }
 
@@ -40,6 +38,24 @@ namespace Bytagramm.Services
         {
             var response = await _httpClient.DeleteAsync($"api/User/{id}");
             return response.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> AuthenticateAsync(string usernameOrEmail, string password) 
+        {
+            var loginData = new LoginDto
+            {
+                Identifier = usernameOrEmail,
+                Password = password
+            };
+
+            var response = await _httpClient.PostAsJsonAsync("api/User/login", loginData);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
