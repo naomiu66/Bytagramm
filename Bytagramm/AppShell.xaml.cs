@@ -1,4 +1,5 @@
 ﻿using Bytagramm.Services.Abstractions;
+using Bytagramm.Views;
 
 namespace Bytagramm
 {
@@ -15,13 +16,14 @@ namespace Bytagramm
             Routing.RegisterRoute(nameof(RegistrationPage), typeof(RegistrationPage));
             Routing.RegisterRoute(nameof(HomePage), typeof(HomePage));
             Routing.RegisterRoute(nameof(CommunitiesPage), typeof(CommunitiesPage));
+            Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
         }
 
         private async Task InitAsync()
         {
-            bool loggedIn = await _userApiService.InitializeAsync();
+            string token = await SecureStorage.GetAsync("access_token");
 
-            if (loggedIn)
+            if (!string.IsNullOrEmpty(token))
                 await Shell.Current.GoToAsync($"///{nameof(HomePage)}");
             else
                 await Shell.Current.GoToAsync($"///{nameof(MainPage)}");

@@ -1,5 +1,4 @@
 ﻿using BytagrammAPI.Data;
-using BytagrammAPI.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace BytagrammAPI.Repositories.Abstractions
@@ -18,6 +17,11 @@ namespace BytagrammAPI.Repositories.Abstractions
         public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();
+        }
+
+        public virtual IQueryable<T> GetAllAsQueryable()
+        {
+            return _dbSet.AsQueryable();
         }
 
         public virtual async Task<T> GetByIdAsync(string id)

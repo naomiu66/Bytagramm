@@ -11,9 +11,6 @@ namespace Bytagramm.Services.Abstractions
         public Task<bool> CreateAsync(RegisterDto user);
         public Task<bool> UpdateAsync(string id, UserDto user);
         public Task<bool> DeleteAsync(string id);
-        public Task<bool> AuthenticateAsync(string usernameOrEmail, string password);
-        public Task LogoutAsync();
-        public Task<bool> InitializeAsync();
-
+        public Task<bool> LoginAsync(LoginDto dto);
     }
 }

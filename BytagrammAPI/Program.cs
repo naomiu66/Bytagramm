@@ -79,8 +79,6 @@ namespace BytagrammAPI
             builder.Services.AddScoped<ICommunityRepository, CommunityRepository>();
             builder.Services.AddScoped<ICommunityService, CommunityService>();
 
-            builder.Services.AddScoped<IAuthService, AuthService>();
-
             builder.Services.AddScoped<IJwtService, JwtService>();
 
             builder.Services.AddControllers();

@@ -1,4 +1,5 @@
-﻿using Bytagramm.Services.Abstractions;
+﻿using Bytagramm.Dto;
+using Bytagramm.Services.Abstractions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Diagnostics;
@@ -46,16 +47,19 @@ namespace Bytagramm.ViewModels
                 await Shell.Current.DisplayAlert("Error", "Fill all fields", "OK");
                 return;
             }
+            LoginDto dto = new LoginDto 
+            {
+                Identifier = UsernameOrEmail,
+                Password = Password,
+            };
 
-            var success = await _userApiService.AuthenticateAsync(UsernameOrEmail, Password);
+            var success = await _userApiService.LoginAsync(dto);
 
             if (success)
             {
                 try
                 {
-#if DEBUG
                     await Shell.Current.DisplayAlert("Success", "User logged in", "OK");
-#endif
                     await Shell.Current.GoToAsync($"///{nameof(HomePage)}");
                 }
                 catch (Exception ex)
@@ -66,7 +70,7 @@ namespace Bytagramm.ViewModels
             }
             else
             {
-                await Shell.Current.DisplayAlert("Erroe", "Something went wrong...", "OK");
+                await Shell.Current.DisplayAlert("Error", "Something went wrong...", "OK");
             }
         }
     }

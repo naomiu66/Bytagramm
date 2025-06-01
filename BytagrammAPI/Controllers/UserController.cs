@@ -1,25 +1,23 @@
 ﻿using BytagrammAPI.Dto;
 using BytagrammAPI.Models;
 using BytagrammAPI.Services.Abstractions;
-using BytagrammAPI.Services.Implementations;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace BytagrammAPI.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly IAuthService _authService;
         private readonly IJwtService _jwtService;
 
-        public UserController(IUserService userService, IAuthService authService, IJwtService jwtService)
+        public UserController(IUserService userService, IJwtService jwtService)
         {
             _userService = userService;
-            _authService = authService;
             _jwtService = jwtService;
         }
 
@@ -49,59 +47,89 @@ namespace BytagrammAPI.Controllers
             return Ok(user);
         }
 
-        [AllowAnonymous]
+        [HttpPost("refresh")]
+        public async Task<IActionResult> RefreshToken([FromBody] TokenDto dto) 
+        {
+            if(dto == null || string.IsNullOrEmpty(dto.RefreshToken)) 
+            {
+                return BadRequest();
+            }
+
+            var user = await _jwtService.ValidateRefreshTokenAsync(dto.RefreshToken);
+
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            var principal = _jwtService.GetPrincipalFromExpiredToken(dto.AccessToken);
+            var userId = principal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+            if(userId == null) 
+            {
+                return Unauthorized();
+            }
+
+            var newTokens = await _jwtService.GenerateTokens(user);
+
+            return Ok(newTokens);
+        }
+
         [HttpPost("register")]
         public async Task<IActionResult> CreateUser([FromBody] RegisterDto dto)
         {
             if (dto == null)
                 return BadRequest("Invalid data");
 
-            var result = await _userService.CreateUserAsync(dto, dto.Password);
-
-            if (!result.Succeeded)
-                return BadRequest(result.Errors);
-
-            var createdUser = await _userService.GetByUsernameAsync(dto.UserName);
-
-            var token = _jwtService.GenerateToken(createdUser.Id, createdUser.UserName);
-
-
-            return Ok(new 
+            var user = new Models.User
             {
-                Token = token,
-                User = new 
-                {
-                    createdUser.Id,
-                    createdUser.UserName,
-                    createdUser.Email
-                }
-            });
+                Id = Guid.NewGuid().ToString(),
+                UserName = dto.UserName,
+                Email = dto.Email,
+                PasswordHash = ComputeSha256Hash(dto.Password)
+            };
+
+            await _userService.AddAsync(user);
+
+            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
         }
 
-        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
-            if (dto == null)
-                return BadRequest("Invalid data");
+            if (string.IsNullOrEmpty(dto.Identifier) || string.IsNullOrEmpty(dto.Password))
+                return BadRequest();
 
-            var user = await _authService.LoginAsync(dto);
+            User user;
+            if (dto.Identifier.Contains("@"))
+            {
+                user = await _userService.GetByEmailAsync(dto.Identifier);
+            }
+            else
+            {
+                user = await _userService.GetByUsernameAsync(dto.Identifier);
+            }
 
-            if (user == null)
-                return Unauthorized("Invalid credentials");
+            if (user == null) 
+                return Unauthorized("Invalid Credentials");
 
-            var token = _jwtService.GenerateToken(user.Id, user.UserName);
+            var isPasswordValid = await _userService.VerifyPasswordAsync(user, dto.Password);
+            if (!isPasswordValid)
+                return Unauthorized("Invalid Credentials");
 
-            return Ok(new {Token = token, User = new { user.Id, user.UserName, user.Email } });
+            var tokens = await _jwtService.GenerateTokens(user);
+
+            return Ok(tokens);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(string id, [FromBody] UserDto dto)
+        public async Task<IActionResult> UpdateUser(string id, [FromBody] RegisterDto dto)
         {
             if (dto == null)
                 return BadRequest();
 
             var user = await _userService.GetByIdAsync(id);
+
             if (user == null)
                 return NotFound();
 
@@ -121,6 +149,21 @@ namespace BytagrammAPI.Controllers
 
             await _userService.DeleteAsync(id);
             return NoContent();
+        }
+
+        private string ComputeSha256Hash(string rawData)
+        {
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+                StringBuilder builder = new StringBuilder();
+
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
         }
     }
 }

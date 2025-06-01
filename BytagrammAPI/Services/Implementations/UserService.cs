@@ -9,29 +9,30 @@ namespace BytagrammAPI.Services.Implementations
     public class UserService : Service<User>, IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly UserManager<User> _userManager;
 
         public UserService(IUserRepository userRepository, UserManager<User> userManager) : base(userRepository)
         {
             _userRepository = userRepository;
-            _userManager = userManager;
         }
 
-        public async Task<IdentityResult> CreateUserAsync(RegisterDto dto, string password)
+        public async Task<User?> GetByEmailAsync(string email)
         {
-            var user = new User
-            {
-                UserName = dto.UserName,
-                Email = dto.Email
-            };
+            return await _userRepository.GetByEmailAsync(email);
+        }
 
-            var result = await _userManager.CreateAsync(user, password);
-            return result;
+        public async Task<User> GetByRefreshTokenAsync(string refreshToken)
+        {
+            return await _userRepository.GetByRefreshTokenAsync(refreshToken);
         }
 
         public async Task<User?> GetByUsernameAsync(string userName)
         {
             return await _userRepository.GetByUsernameAsync(userName);
+        }
+
+        public async Task<bool> VerifyPasswordAsync(User user, string password)
+        {
+            return await _userRepository.VerifyPasswordAsync(user, password);
         }
     }
 }

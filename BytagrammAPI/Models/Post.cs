@@ -5,7 +5,7 @@ namespace BytagrammAPI.Models
     public class Post
     {
         [Required]
-        public string Id { get; set; } 
+        public string Id { get; set; }
 
         public string Title { get; set; }
 

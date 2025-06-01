@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace BytagrammAPI.Dto
+﻿namespace BytagrammAPI.Dto
 {
     public class PostDto
     {

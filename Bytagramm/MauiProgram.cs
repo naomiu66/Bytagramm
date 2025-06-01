@@ -3,6 +3,7 @@ using Bytagramm.Services.Abstractions;
 using Bytagramm.Services.Implementations;
 using Bytagramm.Settings;
 using Bytagramm.ViewModels;
+using Bytagramm.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
@@ -40,7 +41,10 @@ namespace Bytagramm
 
             builder.Services.Configure<ApiSettings>(config.GetSection("ApiSettings"));
 
-            builder.Services.AddHttpClient<ApiService>();
+            builder.Services.AddTransient<AuthentificatedHttpClientHandler>();
+
+            builder.Services.AddHttpClient<ApiService>()
+                .AddHttpMessageHandler<AuthentificatedHttpClientHandler>();
 
             //Services
             builder.Services.AddScoped<IUserApiService, UserApiService>();
@@ -65,6 +69,9 @@ namespace Bytagramm
 
             builder.Services.AddTransient<CommunitiesPage>();
             builder.Services.AddTransient<CommunitiesViewModel>();
+
+            builder.Services.AddTransient<ProfilePage>();
+            builder.Services.AddTransient<ProfileVewModel>();
 
 #if DEBUG
             builder.Logging.AddDebug();

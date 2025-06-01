@@ -67,9 +67,7 @@ namespace Bytagramm.ViewModels
             bool success = await _userApiService.CreateAsync(user);
             if (success)
             {
-#if DEBUG
-                await Shell.Current.DisplayAlert("Success", "User has been created!", "ОК");
-#endif
+                await Shell.Current.DisplayAlert("Success", "User has been registered", "ОК");
                 string token = Guid.NewGuid().ToString();
                 await Shell.Current.GoToAsync($"///{nameof(HomePage)}");
             }

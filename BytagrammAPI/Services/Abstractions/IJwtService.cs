@@ -1,7 +1,13 @@
-﻿namespace BytagrammAPI.Services.Abstractions
+﻿using BytagrammAPI.Dto;
+using BytagrammAPI.Models;
+using System.Security.Claims;
+
+namespace BytagrammAPI.Services.Abstractions
 {
-    public interface IJwtService 
+    public interface IJwtService
     {
-        public string GenerateToken(string UserId, string UserName);
+        public Task<TokenDto> GenerateTokens(User user);
+        public Task<User> ValidateRefreshTokenAsync(string refreshToken);
+        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
     }
 }

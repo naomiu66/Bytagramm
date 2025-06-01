@@ -1,5 +1,4 @@
 ﻿using BytagrammAPI.Dto;
-using BytagrammAPI.Repositories.Abstractions;
 using BytagrammAPI.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,17 +25,17 @@ namespace BytagrammAPI.Controllers
             return Ok(posts);
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPostById(string id) 
+        public async Task<IActionResult> GetPostById(string id)
         {
             var post = await _postService.GetByIdAsync(id);
 
-            if(post == null) return NotFound();
+            if (post == null) return NotFound();
 
             return Ok(post);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreatePost([FromBody] PostDto dto) 
+        public async Task<IActionResult> CreatePost([FromBody] PostDto dto)
         {
             if (dto == null) return BadRequest();
 
@@ -56,7 +55,7 @@ namespace BytagrammAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdatePost(string id, [FromBody] PostDto dto) 
+        public async Task<IActionResult> UpdatePost(string id, [FromBody] PostDto dto)
         {
             if (dto == null) return BadRequest();
 
@@ -68,13 +67,13 @@ namespace BytagrammAPI.Controllers
             post.Content = dto.Content ?? post.Content;
             post.AuthorId = dto.AuthorId ?? post.AuthorId;
             post.CommunityId = dto.CommunityId ?? post.CommunityId;
-                
+
             await _postService.UpdateAsync(post);
             return Ok(post);
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeletePost(string id) 
+        public async Task<IActionResult> DeletePost(string id)
         {
             var post = _postService.GetByIdAsync(id);
 
