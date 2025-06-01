@@ -1,17 +1,16 @@
 ﻿using Bytagramm.Dto;
+using Bytagramm.Services.Abstractions;
+using Bytagramm.Settings;
+using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
 
-namespace Bytagramm.Services
+namespace Bytagramm.Services.Implementations
 {
-    public class UserApiService
+    public class UserApiService : ApiService, IUserApiService
     {
-        private readonly HttpClient _httpClient;
         private string? _jwtToken;
 
-        public UserApiService(HttpClient httpClient) 
-        {
-            _httpClient = httpClient;
-        }
+        public UserApiService(HttpClient httpClient, IOptions<ApiSettings> options) : base(httpClient, options) { }
 
         private void SetAuthorizationHeader()
         {
@@ -22,21 +21,21 @@ namespace Bytagramm.Services
             }
         }
 
-        public async Task<List<UserDto>?> GetAllAsync() 
+        public async Task<List<UserDto>?> GetAllAsync()
         {
             SetAuthorizationHeader();
             return await _httpClient.GetFromJsonAsync<List<UserDto>>("api/User");
         }
 
-        public async Task<UserDto?> GetByIdAsync(string id) 
+        public async Task<UserDto?> GetByIdAsync(string id)
         {
             SetAuthorizationHeader();
             return await _httpClient.GetFromJsonAsync<UserDto>($"api/User/{id}");
         }
 
-        public async Task<bool> CreateAsync(RegisterDto user) 
+        public async Task<bool> CreateAsync(RegisterDto user)
         {
-            var response = await _httpClient.PostAsJsonAsync<RegisterDto>("api/User/register", user);
+            var response = await _httpClient.PostAsJsonAsync("api/User/register", user);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -58,21 +57,21 @@ namespace Bytagramm.Services
             return true;
         }
 
-        public async Task<bool> UpdateAsync(string id, UserDto user) 
+        public async Task<bool> UpdateAsync(string id, UserDto user)
         {
             SetAuthorizationHeader();
-            var response = await _httpClient.PutAsJsonAsync<UserDto>($"api/User/{id}", user);
+            var response = await _httpClient.PutAsJsonAsync($"api/User/{id}", user);
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> DeleteAsync(string id) 
+        public async Task<bool> DeleteAsync(string id)
         {
             SetAuthorizationHeader();
             var response = await _httpClient.DeleteAsync($"api/User/{id}");
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> AuthenticateAsync(string usernameOrEmail, string password) 
+        public async Task<bool> AuthenticateAsync(string usernameOrEmail, string password)
         {
             var loginData = new LoginDto
             {
@@ -109,11 +108,11 @@ namespace Bytagramm.Services
             _httpClient.DefaultRequestHeaders.Authorization = null;
         }
 
-        public async Task<bool> InitializeAsync() 
+        public async Task<bool> InitializeAsync()
         {
             var token = await SecureStorage.GetAsync("jwt_token");
 
-            if (string.IsNullOrEmpty(token)) 
+            if (string.IsNullOrEmpty(token))
             {
                 return false;
             }

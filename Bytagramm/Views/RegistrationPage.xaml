@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Bytagramm.RegistrationPage"
              xmlns:viewmodel="clr-namespace:Bytagramm.ViewModels"
-             x:DataType="viewmodel:RegistrationViewModel"
-             Title="RegistrationPage">
+             x:DataType="viewmodel:RegistrationViewModel">
 
 
     <ScrollView>
@@ -42,8 +41,8 @@
                            HorizontalOptions="Center"
                            TextColor="#333"/>
 
-                    <!-- SignIn title -->
-                    <Label Text="Sign In"
+                    <!-- SignUp title -->
+                    <Label Text="Sign Up"
                            FontSize="30"
                            FontAttributes="Bold"
                            HorizontalOptions="Center"

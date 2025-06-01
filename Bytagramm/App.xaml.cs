@@ -1,13 +1,22 @@
-﻿using Bytagramm.Services;
+﻿using Bytagramm.Services.Abstractions;
+using System.Diagnostics;
 
 namespace Bytagramm
 {
     public partial class App : Application
     {
-        private readonly UserApiService _userApiService;
-        public App(UserApiService userApiService)
+        private readonly IUserApiService _userApiService;
+        public App(IUserApiService userApiService)
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Ошибка в InitializeComponent: " + ex.ToString());
+                throw;
+            }
             _userApiService = userApiService;
         }
 

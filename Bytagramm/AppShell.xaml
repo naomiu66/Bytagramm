@@ -4,12 +4,12 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Bytagramm"
-    Shell.FlyoutBehavior="Flyout"
-    Title="Bytagramm">
+    FlyoutBehavior="Flyout"
+    Title="Bytagramm" IsEnabled="False" IsBusy="False">
     <!-- Shell.FlyoutBehavior="Disabled" -->
 
     <ShellContent
-        Title="Home"
+        Title="Main"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
     <ShellContent
@@ -19,7 +19,7 @@
     <ShellContent
         Title="Login"
         ContentTemplate="{DataTemplate local:LoginPage}"
-        Route="LoginPage" />
+        Route="LoginPage"/>
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:HomePage}"
@@ -27,6 +27,6 @@
     <ShellContent
         Title="Communities"
         ContentTemplate="{DataTemplate local:CommunitiesPage}"
-        Route="CommunitiesPage" />
+        Route="CommunitiesPage"/>
 
 </Shell>

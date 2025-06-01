@@ -4,9 +4,9 @@ namespace Bytagramm;
 
 public partial class RegistrationPage : ContentPage
 {
-	public RegistrationPage(RegistrationViewModel viewModel)
-	{
+    public RegistrationPage(RegistrationViewModel viewModel)
+    {
         InitializeComponent();
-		BindingContext = viewModel;
-	}
+        BindingContext = viewModel;
+    }
 }

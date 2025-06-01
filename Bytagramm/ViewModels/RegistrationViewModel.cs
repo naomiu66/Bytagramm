@@ -1,5 +1,5 @@
 ﻿using Bytagramm.Dto;
-using Bytagramm.Services;
+using Bytagramm.Services.Abstractions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Text.RegularExpressions;
@@ -7,9 +7,9 @@ namespace Bytagramm.ViewModels
 {
     public partial class RegistrationViewModel : ObservableObject
     {
-        private readonly UserApiService _userApiService;
+        private readonly IUserApiService _userApiService;
 
-        public RegistrationViewModel(UserApiService userApiService) 
+        public RegistrationViewModel(IUserApiService userApiService)
         {
             _userApiService = userApiService;
         }
@@ -29,21 +29,21 @@ namespace Bytagramm.ViewModels
         [ObservableProperty]
         private bool isPassword = true;
 
-        partial void OnShowPasswordChanged(bool value) 
+        partial void OnShowPasswordChanged(bool value)
         {
             IsPassword = !value;
         }
 
         [RelayCommand]
-        private async Task Login() 
+        private async Task Login()
         {
             await Shell.Current.GoToAsync($"///{nameof(LoginPage)}");
         }
 
         [RelayCommand]
-        private async Task Register() 
+        private async Task Register()
         {
-            if(string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password) || string.IsNullOrWhiteSpace(Mail)) 
+            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password) || string.IsNullOrWhiteSpace(Mail))
             {
                 await Shell.Current.DisplayAlert("Error", "Fill all fields", "OK");
                 return;

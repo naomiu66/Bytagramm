@@ -1,16 +1,15 @@
 ﻿using Bytagramm.Dto;
+using Bytagramm.Services.Abstractions;
+using Bytagramm.Settings;
+using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
 
 namespace Bytagramm.Services
 {
-    class CommunityApiService
+    class CommunityApiService : ApiService, ICommunityApiService
     {
-        private readonly HttpClient _httpClient;
 
-        public CommunityApiService(HttpClient httpClient)
-        {
-            _httpClient = httpClient;
-        }
+        public CommunityApiService(HttpClient httpClient, IOptions<ApiSettings> options) : base(httpClient, options) { }
 
         public async Task<List<CommunityDto>?> GetAllAsync()
         {

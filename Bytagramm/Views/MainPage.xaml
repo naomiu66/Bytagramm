@@ -51,8 +51,8 @@
                          HorizontalOptions="FillAndExpand"/>
 
                     <!-- Register button -->
-                    <Button Text="Sign In"
-                         Command="{Binding SigninCommand}"
+                    <Button Text="Sign Up"
+                         Command="{Binding SignupCommand}"
                          BackgroundColor="#FF4500"
                          TextColor="White"
                          FontAttributes="Bold"

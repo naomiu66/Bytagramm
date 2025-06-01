@@ -1,16 +1,15 @@
-﻿using Bytagramm.Services;
+﻿using Bytagramm.Services.Abstractions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Maui.ApplicationModel.Communication;
 using System.Diagnostics;
 
 namespace Bytagramm.ViewModels
 {
     public partial class LoginViewModel : ObservableObject
     {
-        private readonly UserApiService _userApiService;
+        private readonly IUserApiService _userApiService;
 
-        public LoginViewModel(UserApiService userApiService)
+        public LoginViewModel(IUserApiService userApiService)
         {
             _userApiService = userApiService;
         }
@@ -34,13 +33,13 @@ namespace Bytagramm.ViewModels
 
 
         [RelayCommand]
-        private async Task Signin() 
+        private async Task Signup()
         {
             await Shell.Current.GoToAsync($"///{nameof(RegistrationPage)}");
         }
 
         [RelayCommand]
-        private async Task Login() 
+        private async Task Login()
         {
             if (string.IsNullOrWhiteSpace(UsernameOrEmail) || string.IsNullOrWhiteSpace(Password))
             {
@@ -49,8 +48,8 @@ namespace Bytagramm.ViewModels
             }
 
             var success = await _userApiService.AuthenticateAsync(UsernameOrEmail, Password);
-            
-            if(success)
+
+            if (success)
             {
                 try
                 {
@@ -65,7 +64,7 @@ namespace Bytagramm.ViewModels
                     await Application.Current.MainPage.DisplayAlert("Ошибка", ex.Message, "ОК");
                 }
             }
-            else 
+            else
             {
                 await Shell.Current.DisplayAlert("Erroe", "Something went wrong...", "OK");
             }

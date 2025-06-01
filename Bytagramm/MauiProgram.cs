@@ -1,10 +1,11 @@
-﻿using Bytagramm.ViewModels;
-using Microsoft.Extensions.Logging;
-using Bytagramm.Services;
-using Microsoft.Extensions.Configuration;
+﻿using Bytagramm.Services;
+using Bytagramm.Services.Abstractions;
+using Bytagramm.Services.Implementations;
 using Bytagramm.Settings;
+using Bytagramm.ViewModels;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System.Reflection;
-using System.Diagnostics;
 
 
 namespace Bytagramm
@@ -37,21 +38,16 @@ namespace Bytagramm
 
             var settings = config.GetRequiredSection("ApiSettings").Get<ApiSettings>();
 
+            builder.Services.Configure<ApiSettings>(config.GetSection("ApiSettings"));
+
+            builder.Services.AddHttpClient<ApiService>();
+
             //Services
-            builder.Services.AddHttpClient<UserApiService>(client =>
-            {
-                client.BaseAddress = new Uri(settings.Path);
-            });
+            builder.Services.AddScoped<IUserApiService, UserApiService>();
 
-            builder.Services.AddHttpClient<PostApiService>(client =>
-            {
-                client.BaseAddress = new Uri(settings.Path);
-            });
+            builder.Services.AddScoped<IPostApiService, PostApiService>();
 
-            builder.Services.AddHttpClient<CommunityApiService>(client =>
-            {
-                client.BaseAddress = new Uri(settings.Path);
-            });
+            builder.Services.AddScoped<ICommunityApiService, CommunityApiService>();
 
 
             //Pages

@@ -1,11 +1,11 @@
-﻿using Bytagramm.Services;
+﻿using Bytagramm.Services.Abstractions;
 
 namespace Bytagramm
 {
     public partial class AppShell : Shell
     {
-        private readonly UserApiService _userApiService;
-        public AppShell(UserApiService userApiService)
+        private readonly IUserApiService _userApiService;
+        public AppShell(IUserApiService userApiService)
         {
             InitializeComponent();
 

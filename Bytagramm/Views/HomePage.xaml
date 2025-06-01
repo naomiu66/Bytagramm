@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:Bytagramm.ViewModels"
              x:DataType="viewmodel:HomeViewModel"
-             x:Class="Bytagramm.HomePage"
-             Title="HomePage">
+             x:Class="Bytagramm.HomePage">
     <VerticalStackLayout>
         <Label 
             Text="Welcome to .NET MAUI!"

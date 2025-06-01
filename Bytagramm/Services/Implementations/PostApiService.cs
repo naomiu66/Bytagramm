@@ -1,17 +1,16 @@
 ﻿using Bytagramm.Dto;
+using Bytagramm.Services.Abstractions;
+using Bytagramm.Settings;
+using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
 
 
-namespace Bytagramm.Services
+namespace Bytagramm.Services.Implementations
 {
-    class PostApiService
+    class PostApiService : ApiService, IPostApiService
     {
-        private readonly HttpClient _httpClient;
 
-        public PostApiService(HttpClient httpClient)
-        {
-            _httpClient = httpClient;
-        }
+        public PostApiService(HttpClient httpClient, IOptions<ApiSettings> options) : base(httpClient, options) { }
 
         public async Task<List<PostDto>?> GetAllAsync()
         {

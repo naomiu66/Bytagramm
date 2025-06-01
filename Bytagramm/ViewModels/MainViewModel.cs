@@ -7,13 +7,13 @@ namespace Bytagramm.ViewModels
     {
 
         [RelayCommand]
-        private async Task Login() 
+        private async Task Login()
         {
             await Shell.Current.GoToAsync($"///{nameof(LoginPage)}");
         }
 
         [RelayCommand]
-        private async Task Signin() 
+        private async Task Signup()
         {
             await Shell.Current.GoToAsync($"///{nameof(RegistrationPage)}");
         }
