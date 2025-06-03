@@ -15,7 +15,7 @@ namespace BytagrammAPI.Controllers
             _communityService = postService;
         }
 
-        [HttpGet]
+        [HttpGet("get-all")]
         public async Task<IActionResult> GetAllPosts()
         {
             var communities = await _communityService.GetAllAsync();
@@ -24,7 +24,7 @@ namespace BytagrammAPI.Controllers
 
             return Ok(communities);
         }
-        [HttpGet("{id}")]
+        [HttpGet("get/{id}")]
         public async Task<IActionResult> GetPostById(string id)
         {
             var community = await _communityService.GetByIdAsync(id);
@@ -34,7 +34,7 @@ namespace BytagrammAPI.Controllers
             return Ok(community);
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<IActionResult> CreateCommunity([FromBody] CommunityDto dto)
         {
             if (dto == null) return BadRequest();
@@ -53,7 +53,7 @@ namespace BytagrammAPI.Controllers
             return Ok(community);
         }
 
-        [HttpPut]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateCommunity(string id, [FromBody] CommunityDto dto)
         {
             if (dto == null) return BadRequest();
@@ -71,7 +71,7 @@ namespace BytagrammAPI.Controllers
             return Ok(community);
         }
 
-        [HttpDelete]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteCommunity(string id)
         {
             var community = _communityService.GetByIdAsync(id);

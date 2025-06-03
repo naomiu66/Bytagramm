@@ -9,33 +9,33 @@ namespace Bytagramm.Services
     class CommunityApiService : ApiService, ICommunityApiService
     {
 
-        public CommunityApiService(HttpClient httpClient, IOptions<ApiSettings> options) : base(httpClient, options) { }
+        public CommunityApiService(IHttpClientFactory httpClientFactory, IOptions<ApiSettings> options) : base(httpClientFactory, options) { }
 
         public async Task<List<CommunityDto>?> GetAllAsync()
         {
-            return await _httpClient.GetFromJsonAsync<List<CommunityDto>>("api/Community");
+            return await _httpClient.GetFromJsonAsync<List<CommunityDto>>("api/Community/get-all");
         }
 
         public async Task<CommunityDto?> GetByIdAsync(string id)
         {
-            return await _httpClient.GetFromJsonAsync<CommunityDto>($"api/Community/{id}");
+            return await _httpClient.GetFromJsonAsync<CommunityDto>($"api/Community/get/{id}");
         }
 
         public async Task<bool> CreateAsync(CommunityDto community)
         {
-            var response = await _httpClient.PostAsJsonAsync<CommunityDto>("api/Community", community);
+            var response = await _httpClient.PostAsJsonAsync<CommunityDto>("api/Community/create", community);
             return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> UpdateAsync(string id, CommunityDto community)
         {
-            var response = await _httpClient.PutAsJsonAsync<CommunityDto>($"api/Community/{id}", community);
+            var response = await _httpClient.PutAsJsonAsync<CommunityDto>($"api/Community/update/{id}", community);
             return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> DeleteAsync(string id)
         {
-            var response = await _httpClient.DeleteAsync($"api/Community/{id}");
+            var response = await _httpClient.DeleteAsync($"api/Community/delete/{id}");
             return response.IsSuccessStatusCode;
         }
     }

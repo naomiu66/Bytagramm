@@ -76,6 +76,9 @@ namespace BytagrammAPI.Services.Implementations
         {
             var claims = new[]
             {
+                new Claim(ClaimTypes.NameIdentifier, userId),
+                new Claim(ClaimTypes.Name, userName),
+
                 new Claim(JwtRegisteredClaimNames.Sub, userId),
                 new Claim(JwtRegisteredClaimNames.UniqueName, userName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())

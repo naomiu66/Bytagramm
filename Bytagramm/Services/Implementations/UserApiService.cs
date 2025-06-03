@@ -9,17 +9,17 @@ namespace Bytagramm.Services.Implementations
 {
     public class UserApiService : ApiService, IUserApiService
     {
-        public UserApiService(HttpClient httpClient, IOptions<ApiSettings> options) : base(httpClient, options) { }
+        public UserApiService(IHttpClientFactory httpClientFactory, IOptions<ApiSettings> options) : base(httpClientFactory, options) { }
 
 
         public async Task<List<UserDto>?> GetAllAsync()
         {
-            return await _httpClient.GetFromJsonAsync<List<UserDto>>("api/User");
+            return await _httpClient.GetFromJsonAsync<List<UserDto>>("api/User/get-all");
         }
 
         public async Task<UserDto?> GetByIdAsync(string id)
         {
-            return await _httpClient.GetFromJsonAsync<UserDto>($"api/User/{id}");
+            return await _httpClient.GetFromJsonAsync<UserDto>($"api/User/get/{id}");
         }
 
         public async Task<bool> CreateAsync(RegisterDto user)
@@ -36,13 +36,13 @@ namespace Bytagramm.Services.Implementations
 
         public async Task<bool> UpdateAsync(string id, UserDto user)
         {
-            var response = await _httpClient.PutAsJsonAsync($"api/User/{id}", user);
+            var response = await _httpClient.PutAsJsonAsync($"api/User/update/{id}", user);
             return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> DeleteAsync(string id)
         {
-            var response = await _httpClient.DeleteAsync($"api/User/{id}");
+            var response = await _httpClient.DeleteAsync($"api/User/delete/{id}");
             return response.IsSuccessStatusCode;
         }
 
@@ -65,6 +65,11 @@ namespace Bytagramm.Services.Implementations
             await SecureStorage.SetAsync("refresh_token", tokenDto.RefreshToken);
 
             return true;
+        }
+
+        public async Task<ProfileDto?> GetCurrentUserAsync()
+        {
+            return await _httpClient.GetFromJsonAsync<ProfileDto>($"api/User/get-me");
         }
     }
 }

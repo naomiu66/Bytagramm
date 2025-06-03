@@ -1,8 +1,10 @@
 ﻿using BytagrammAPI.Dto;
 using BytagrammAPI.Models;
 using BytagrammAPI.Services.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.JsonWebTokens;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -21,7 +23,7 @@ namespace BytagrammAPI.Controllers
             _jwtService = jwtService;
         }
 
-        [HttpGet]
+        [HttpGet("get-all")]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _userService.GetAllAsync();
@@ -34,7 +36,37 @@ namespace BytagrammAPI.Controllers
             return Ok(users);
         }
 
-        [HttpGet("{id}")]
+        [Authorize]
+        [HttpGet("get-me")]
+        public async Task<IActionResult> GetCurrentUser() 
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null) return Unauthorized();
+
+            var user = await _userService.GetByIdAsync(userId);
+
+            if (user == null) return NotFound();
+
+            List<CommunityDto> dtoList = user.SubscribedCommunities
+                .Select(c => new CommunityDto
+                {
+                    Name = c.Name,
+                    Description = c.Description,
+                    AuthorId = c.AuthorId
+                })
+                .ToList();
+
+            var dto = new ProfileDto
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+                Communities = dtoList
+            };
+            return Ok(dto);
+        }
+
+        [HttpGet("get/{id}")]
         public async Task<IActionResult> GetUserById(string id)
         {
             var user = await _userService.GetByIdAsync(id);
@@ -122,7 +154,7 @@ namespace BytagrammAPI.Controllers
             return Ok(tokens);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateUser(string id, [FromBody] RegisterDto dto)
         {
             if (dto == null)
@@ -140,7 +172,7 @@ namespace BytagrammAPI.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteUser(string id)
         {
             var user = await _userService.GetByIdAsync(id);

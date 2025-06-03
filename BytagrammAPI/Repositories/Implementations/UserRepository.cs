@@ -14,6 +14,11 @@ namespace BytagrammAPI.Repositories.Implementations
         {
         }
 
+        public override async Task<User> GetByIdAsync(string id)
+        {
+            return await GetAllAsQueryable().Include(u => u.SubscribedCommunities).FirstAsync(u =>  u.Id == id);
+        }
+
         public async Task<User?> GetByEmailAsync(string email)
         {
             return await GetAllAsQueryable().FirstOrDefaultAsync(u => u.Email == email);

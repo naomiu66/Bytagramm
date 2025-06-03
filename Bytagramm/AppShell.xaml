@@ -28,5 +28,9 @@
         Title="Communities"
         ContentTemplate="{DataTemplate local:CommunitiesPage}"
         Route="CommunitiesPage"/>
+    <ShellContent
+        Title="Profile"
+        ContentTemplate="{DataTemplate local:ProfilePage}"
+        Route="ProfilePage"/>
 
 </Shell>

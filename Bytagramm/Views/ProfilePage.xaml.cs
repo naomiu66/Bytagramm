@@ -1,13 +1,15 @@
 using Bytagramm.ViewModels;
 
-namespace Bytagramm.Views;
+namespace Bytagramm;
 
 public partial class ProfilePage : ContentPage
 {
 	public ProfilePage()
 	{
-		InitializeComponent();
-        var viewModel = MauiProgram.Current.GetService<ProfileVewModel>();
+        InitializeComponent();
+        var viewModel = MauiProgram.Current.GetService<ProfileViewModel>();
         BindingContext = viewModel;
+
+        viewModel.InitializeAsync();
     }
 }

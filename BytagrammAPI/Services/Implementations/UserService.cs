@@ -15,6 +15,11 @@ namespace BytagrammAPI.Services.Implementations
             _userRepository = userRepository;
         }
 
+        public override async Task<User> GetByIdAsync(string id)
+        {
+            return await _userRepository.GetByIdAsync(id);
+        }
+
         public async Task<User?> GetByEmailAsync(string email)
         {
             return await _userRepository.GetByEmailAsync(email);

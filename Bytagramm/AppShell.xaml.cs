@@ -1,5 +1,4 @@
 ﻿using Bytagramm.Services.Abstractions;
-using Bytagramm.Views;
 
 namespace Bytagramm
 {

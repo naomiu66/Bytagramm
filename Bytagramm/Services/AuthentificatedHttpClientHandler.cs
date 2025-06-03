@@ -1,8 +1,9 @@
-﻿using Bytagramm.Settings;
+﻿using Bytagramm.Models;
+using Bytagramm.Settings;
+using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using Bytagramm.Models;
 
 namespace Bytagramm.Services
 {
@@ -10,9 +11,9 @@ namespace Bytagramm.Services
     {
         protected readonly ApiSettings _settings;
 
-        public AuthentificatedHttpClientHandler(ApiSettings settings) 
+        public AuthentificatedHttpClientHandler(IOptions<ApiSettings> options) 
         {
-            _settings = settings;
+            _settings = options.Value;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) 
@@ -52,6 +53,8 @@ namespace Bytagramm.Services
             };
 
             using var client = new HttpClient();
+            client.BaseAddress = new Uri(_settings.BaseUrl);
+
             var response = await client.PostAsJsonAsync("api/User/refresh", refreshDto);
 
             if (!response.IsSuccessStatusCode) return false;

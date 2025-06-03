@@ -15,7 +15,7 @@ namespace BytagrammAPI.Controllers
             _postService = postService;
         }
 
-        [HttpGet]
+        [HttpGet("get-all")]
         public async Task<IActionResult> GetAllPosts()
         {
             var posts = await _postService.GetAllAsync();
@@ -24,7 +24,7 @@ namespace BytagrammAPI.Controllers
 
             return Ok(posts);
         }
-        [HttpGet("{id}")]
+        [HttpGet("get/{id}")]
         public async Task<IActionResult> GetPostById(string id)
         {
             var post = await _postService.GetByIdAsync(id);
@@ -34,7 +34,7 @@ namespace BytagrammAPI.Controllers
             return Ok(post);
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<IActionResult> CreatePost([FromBody] PostDto dto)
         {
             if (dto == null) return BadRequest();
@@ -54,7 +54,7 @@ namespace BytagrammAPI.Controllers
             return Ok(posts);
         }
 
-        [HttpPut]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdatePost(string id, [FromBody] PostDto dto)
         {
             if (dto == null) return BadRequest();
@@ -72,7 +72,7 @@ namespace BytagrammAPI.Controllers
             return Ok(post);
         }
 
-        [HttpDelete]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeletePost(string id)
         {
             var post = _postService.GetByIdAsync(id);

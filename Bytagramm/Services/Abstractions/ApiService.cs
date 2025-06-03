@@ -10,9 +10,9 @@ namespace Bytagramm.Services.Abstractions
         protected readonly HttpClient _httpClient;
         protected readonly ApiSettings _apiSettings;
 
-        public ApiService(HttpClient httpClient, IOptions<ApiSettings> options)
+        public ApiService(IHttpClientFactory httpClientFactory, IOptions<ApiSettings> options)
         {
-            _httpClient = httpClient;
+            _httpClient = httpClientFactory.CreateClient("ApiClient");
             _apiSettings = options.Value;
 
             _httpClient.BaseAddress = new Uri(_apiSettings.BaseUrl);
