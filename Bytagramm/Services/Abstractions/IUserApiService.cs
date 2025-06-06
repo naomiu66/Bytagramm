@@ -1,5 +1,4 @@
-﻿using Bytagramm.Dto;
-using Bytagramm.Models;
+﻿using Bytagramm.Models.User;
 
 namespace Bytagramm.Services.Abstractions
 {

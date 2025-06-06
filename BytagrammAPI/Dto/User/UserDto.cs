@@ -1,4 +1,4 @@
-﻿namespace BytagrammAPI.Dto
+﻿namespace BytagrammAPI.Dto.User
 {
     public class UserDto
     {

@@ -1,4 +1,4 @@
-﻿using Bytagramm.Dto;
+﻿using Bytagramm.Models.Community;
 using Bytagramm.Services.Abstractions;
 using Bytagramm.Settings;
 using Microsoft.Extensions.Options;
@@ -11,25 +11,25 @@ namespace Bytagramm.Services
 
         public CommunityApiService(IHttpClientFactory httpClientFactory, IOptions<ApiSettings> options) : base(httpClientFactory, options) { }
 
-        public async Task<List<CommunityDto>?> GetAllAsync()
+        public async Task<List<CreateCommunityDto>?> GetAllAsync()
         {
-            return await _httpClient.GetFromJsonAsync<List<CommunityDto>>("api/Community/get-all");
+            return await _httpClient.GetFromJsonAsync<List<CreateCommunityDto>>("api/Community/get-all");
         }
 
-        public async Task<CommunityDto?> GetByIdAsync(string id)
+        public async Task<CreateCommunityDto?> GetByIdAsync(string id)
         {
-            return await _httpClient.GetFromJsonAsync<CommunityDto>($"api/Community/get/{id}");
+            return await _httpClient.GetFromJsonAsync<CreateCommunityDto>($"api/Community/get/{id}");
         }
 
-        public async Task<bool> CreateAsync(CommunityDto community)
+        public async Task<bool> CreateAsync(CreateCommunityDto community)
         {
-            var response = await _httpClient.PostAsJsonAsync<CommunityDto>("api/Community/create", community);
+            var response = await _httpClient.PostAsJsonAsync<CreateCommunityDto>("api/Community/create", community);
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> UpdateAsync(string id, CommunityDto community)
+        public async Task<bool> UpdateAsync(string id, CreateCommunityDto community)
         {
-            var response = await _httpClient.PutAsJsonAsync<CommunityDto>($"api/Community/update/{id}", community);
+            var response = await _httpClient.PutAsJsonAsync<CreateCommunityDto>($"api/Community/update/{id}", community);
             return response.IsSuccessStatusCode;
         }
 

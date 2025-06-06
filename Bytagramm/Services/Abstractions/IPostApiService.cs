@@ -1,6 +1,4 @@
-﻿
-
-using Bytagramm.Dto;
+﻿using Bytagramm.Models.Post;
 
 namespace Bytagramm.Services.Abstractions
 {

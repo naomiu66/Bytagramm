@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Bytagramm.Views.Community.CreateCommunityPage"
+             Title="CreateCommunityPage"
+             xmlns:viewmodel="clr-namespace:Bytagramm.ViewModels.Community"
+             x:DataType="viewmodel:CreateCommunityViewModel">
+    <ScrollView>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Frame Grid.Row="1"
+                   Grid.Column="1"
+                   BackgroundColor="White"
+                   CornerRadius="20"
+                   Padding="30"
+                   WidthRequest="320"
+                   HasShadow="True"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center">
+
+                <VerticalStackLayout Spacing="20"
+                                     HorizontalOptions="Fill"
+                                     VerticalOptions="Center">
+
+                    <!-- Title -->
+                    <Label Text="Create a Community"
+                           FontSize="28"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="#333"/>
+
+                    <!-- Community Name -->
+                    <Entry Placeholder="Community Name"
+                           Text="{Binding Name}"
+                           FontSize="16"
+                           BackgroundColor="#F9F9F9"
+                           TextColor="#000"
+                           PlaceholderColor="#888"
+                           HeightRequest="50"
+                           HorizontalOptions="FillAndExpand"/>
+
+                    <!-- Community Description -->
+                    <Editor Placeholder="Description"
+                            Text="{Binding Description}"
+                            FontSize="16"
+                            BackgroundColor="#F9F9F9"
+                            TextColor="#000"
+                            PlaceholderColor="#888"
+                            AutoSize="TextChanges"
+                            HeightRequest="100"
+                            HorizontalOptions="FillAndExpand"/>
+
+                    <!-- Create Button -->
+                    <Button Text="Create Community"
+                            Command="{Binding CreateCommand}"
+                            BackgroundColor="#FF4500"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            HeightRequest="50"
+                            CornerRadius="10"
+                            HorizontalOptions="FillAndExpand"/>
+                </VerticalStackLayout>
+
+            </Frame>
+        </Grid>
+    </ScrollView>
+</ContentPage>

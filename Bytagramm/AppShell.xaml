@@ -4,6 +4,8 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Bytagramm"
+    xmlns:post="clr-namespace:Bytagramm.Views.Post"
+    xmlns:community="clr-namespace:Bytagramm.Views.Community"
     FlyoutBehavior="Flyout"
     Title="Bytagramm" IsEnabled="False" IsBusy="False">
     <!-- Shell.FlyoutBehavior="Disabled" -->
@@ -32,5 +34,25 @@
         Title="Profile"
         ContentTemplate="{DataTemplate local:ProfilePage}"
         Route="ProfilePage"/>
+
+    <!-- Post -->
+        <ShellContent
+        Title="CreatePost"
+        ContentTemplate="{DataTemplate post:CreatePostPage}"
+        Route="CreatePostPage"/>
+    <ShellContent
+        Title="PostDetailsPage"
+        ContentTemplate="{DataTemplate post:PostDetailsPage}"
+        Route="PostDetailsPage"/>
+
+    <!-- Community -->
+    <ShellContent
+        Title="CreateCommunity"
+        ContentTemplate="{DataTemplate community:CreateCommunityPage}"
+        Route="CreateCommunityPage"/>
+    <ShellContent
+        Title="PostDetailsPage"
+        ContentTemplate="{DataTemplate community:CommunityDetailsPage}"
+        Route="CommunityDetailsPage"/>
 
 </Shell>

@@ -1,9 +1,8 @@
-﻿namespace Bytagramm.Dto
+﻿namespace BytagrammAPI.Dto.Community
 {
-    public class PostDto
+    public class CreateCommunityDto
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public string AuthorId { get; set; }
     }
 }

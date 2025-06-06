@@ -1,4 +1,4 @@
-﻿using BytagrammAPI.Dto;
+﻿using BytagrammAPI.Dto.User;
 using BytagrammAPI.Models;
 
 namespace BytagrammAPI.Services.Abstractions

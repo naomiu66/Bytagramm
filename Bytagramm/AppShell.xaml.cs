@@ -1,4 +1,6 @@
 ﻿using Bytagramm.Services.Abstractions;
+using Bytagramm.Views.Community;
+using Bytagramm.Views.Post;
 
 namespace Bytagramm
 {
@@ -16,6 +18,12 @@ namespace Bytagramm
             Routing.RegisterRoute(nameof(HomePage), typeof(HomePage));
             Routing.RegisterRoute(nameof(CommunitiesPage), typeof(CommunitiesPage));
             Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
+
+            Routing.RegisterRoute(nameof(CreatePostPage), typeof(CreatePostPage));
+            Routing.RegisterRoute(nameof(PostDetailsPage), typeof(PostDetailsPage));
+
+            Routing.RegisterRoute(nameof(CreateCommunityPage), typeof(CreateCommunityPage));
+            Routing.RegisterRoute(nameof(CommunityDetailsPage), typeof(CommunityDetailsPage));
         }
 
         private async Task InitAsync()

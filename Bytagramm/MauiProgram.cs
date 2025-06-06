@@ -3,6 +3,10 @@ using Bytagramm.Services.Abstractions;
 using Bytagramm.Services.Implementations;
 using Bytagramm.Settings;
 using Bytagramm.ViewModels;
+using Bytagramm.ViewModels.Community;
+using Bytagramm.ViewModels.Post;
+using Bytagramm.Views.Community;
+using Bytagramm.Views.Post;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
@@ -57,6 +61,7 @@ namespace Bytagramm
             builder.Services.AddSingleton<MainPage>();
             builder.Services.AddSingleton<MainViewModel>();
 
+            //User
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<LoginViewModel>();
 
@@ -72,6 +77,19 @@ namespace Bytagramm
             builder.Services.AddTransient<ProfilePage>();
             builder.Services.AddTransient<ProfileViewModel>();
 
+            //Post
+            builder.Services.AddTransient<CreatePostPage>();
+            builder.Services.AddTransient<CreatePostViewModel>();
+
+            builder.Services.AddTransient<PostDetailsPage>();
+            builder.Services.AddTransient<PostDetailsViewModel>();
+
+            //Communiuty
+            builder.Services.AddTransient<CreateCommunityPage>();
+            builder.Services.AddTransient<CreateCommunityViewModel>();
+
+            builder.Services.AddTransient<CommunityDetailsPage>();
+            builder.Services.AddTransient<CommunityDetailsViewModel>();
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

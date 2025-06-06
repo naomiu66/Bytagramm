@@ -1,6 +1,8 @@
-﻿using BytagrammAPI.Dto;
+﻿using BytagrammAPI.Dto.Community;
 using BytagrammAPI.Services.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BytagrammAPI.Controllers
 {
@@ -34,17 +36,22 @@ namespace BytagrammAPI.Controllers
             return Ok(community);
         }
 
+        [Authorize]
         [HttpPost("create")]
-        public async Task<IActionResult> CreateCommunity([FromBody] CommunityDto dto)
+        public async Task<IActionResult> CreateCommunity([FromBody] CreateCommunityDto dto)
         {
             if (dto == null) return BadRequest();
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null) return Unauthorized();
 
             var community = new Models.Community
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = dto.Name,
                 Description = dto.Description,
-                AuthorId = dto.AuthorId,
+                AuthorId = userId,
                 Created = DateTime.UtcNow
             };
 
@@ -62,9 +69,8 @@ namespace BytagrammAPI.Controllers
 
             if (community == null) return NotFound();
 
-            community.Name = dto.Name ?? community.Name;
+            community.Name = dto.Title ?? community.Name;
             community.Description = dto.Description ?? community.Description;
-            community.AuthorId = dto.AuthorId ?? community.AuthorId;
 
             await _communityService.UpdateAsync(community);
 

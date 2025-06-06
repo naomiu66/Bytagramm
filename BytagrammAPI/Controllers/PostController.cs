@@ -1,6 +1,8 @@
-﻿using BytagrammAPI.Dto;
+﻿using BytagrammAPI.Dto.Post;
 using BytagrammAPI.Services.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BytagrammAPI.Controllers
 {
@@ -34,17 +36,22 @@ namespace BytagrammAPI.Controllers
             return Ok(post);
         }
 
+        [Authorize]
         [HttpPost("create")]
-        public async Task<IActionResult> CreatePost([FromBody] PostDto dto)
+        public async Task<IActionResult> CreatePost([FromBody] CreatePostDto dto)
         {
             if (dto == null) return BadRequest();
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if(userId == null) return Unauthorized();
 
             var posts = new Models.Post
             {
                 Id = Guid.NewGuid().ToString(),
                 Title = dto.Title,
                 Content = dto.Content,
-                AuthorId = dto.AuthorId,
+                AuthorId = userId,
                 CommunityId = dto.CommunityId,
                 CreatedDate = DateTime.UtcNow
             };

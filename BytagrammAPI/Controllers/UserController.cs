@@ -1,4 +1,6 @@
 ﻿using BytagrammAPI.Dto;
+using BytagrammAPI.Dto.Community;
+using BytagrammAPI.Dto.User;
 using BytagrammAPI.Models;
 using BytagrammAPI.Services.Abstractions;
 using Microsoft.AspNetCore.Authorization;
@@ -48,12 +50,11 @@ namespace BytagrammAPI.Controllers
 
             if (user == null) return NotFound();
 
-            List<CommunityDto> dtoList = user.SubscribedCommunities
-                .Select(c => new CommunityDto
+            List<CreateCommunityDto> dtoList = user.SubscribedCommunities
+                .Select(c => new CreateCommunityDto
                 {
                     Name = c.Name,
                     Description = c.Description,
-                    AuthorId = c.AuthorId
                 })
                 .ToList();
 

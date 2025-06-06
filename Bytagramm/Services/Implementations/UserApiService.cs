@@ -1,5 +1,5 @@
-﻿using Bytagramm.Dto;
-using Bytagramm.Models;
+﻿using Bytagramm.Models;
+using Bytagramm.Models.User;
 using Bytagramm.Services.Abstractions;
 using Bytagramm.Settings;
 using Microsoft.Extensions.Options;
