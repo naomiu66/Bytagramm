@@ -80,6 +80,7 @@ namespace BytagrammAPI.Controllers
             return Ok(user);
         }
 
+        [AllowAnonymous]
         [HttpPost("refresh")]
         public async Task<IActionResult> RefreshToken([FromBody] TokenDto dto) 
         {
@@ -92,15 +93,16 @@ namespace BytagrammAPI.Controllers
 
             if (user == null)
             {
-                return BadRequest();
+                return Unauthorized("Invalid refresh token");
             }
 
             var principal = _jwtService.GetPrincipalFromExpiredToken(dto.AccessToken);
-            var userId = principal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+            var userId = principal.Claims.First().Value;
 
             if(userId == null) 
             {
-                return Unauthorized();
+                return Unauthorized("Access token and refresh token mismatch");
             }
 
             var newTokens = await _jwtService.GenerateTokens(user);

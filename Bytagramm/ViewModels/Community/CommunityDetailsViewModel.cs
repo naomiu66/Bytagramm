@@ -19,7 +19,7 @@ namespace Bytagramm.ViewModels.Community
         }
 
         [ObservableProperty]
-        public CreateCommunityDto community;
+        public CommunityDto community;
 
         public async void ApplyQueryAttributes(IDictionary<string, object> query) 
         {
