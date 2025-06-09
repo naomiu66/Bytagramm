@@ -9,7 +9,7 @@ namespace BytagrammAPI.Data.Connections.Redis
         private readonly Task<IConnectionMultiplexer> _connection;
         private readonly RedisSettings _settings;
 
-        public RedisConnection(IOptions<RedisSettings> options) 
+        public RedisConnection(IOptions<RedisSettings> options)
         {
             _settings = options.Value;
             _connection = InitializeConnectionAsync();
@@ -32,7 +32,7 @@ namespace BytagrammAPI.Data.Connections.Redis
 
         public void Dispose()
         {
-            if (_connection.IsCompleted && _connection.IsCompletedSuccessfully) 
+            if (_connection.IsCompleted && _connection.IsCompletedSuccessfully)
             {
                 _connection.Result?.Dispose();
             }

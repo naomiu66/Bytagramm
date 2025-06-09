@@ -1,6 +1,4 @@
-﻿using BytagrammAPI.Dto;
-using BytagrammAPI.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using BytagrammAPI.Models;
 
 namespace BytagrammAPI.Services.Abstractions
 {

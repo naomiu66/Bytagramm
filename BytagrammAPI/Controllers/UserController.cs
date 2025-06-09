@@ -4,10 +4,8 @@ using BytagrammAPI.Dto.User;
 using BytagrammAPI.Models;
 using BytagrammAPI.Models.Redis;
 using BytagrammAPI.Services.Abstractions;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.JsonWebTokens;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -44,7 +42,7 @@ namespace BytagrammAPI.Controllers
 
         [Authorize]
         [HttpGet("get-me")]
-        public async Task<IActionResult> GetCurrentUser() 
+        public async Task<IActionResult> GetCurrentUser()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -86,9 +84,9 @@ namespace BytagrammAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost("refresh")]
-        public async Task<IActionResult> RefreshToken([FromBody] TokenDto dto) 
+        public async Task<IActionResult> RefreshToken([FromBody] TokenDto dto)
         {
-            if(dto == null || string.IsNullOrEmpty(dto.RefreshToken)) 
+            if (dto == null || string.IsNullOrEmpty(dto.RefreshToken))
             {
                 return BadRequest();
             }
@@ -104,7 +102,7 @@ namespace BytagrammAPI.Controllers
 
             var userId = principal.Claims.First().Value;
 
-            if(userId == null) 
+            if (userId == null)
             {
                 return Unauthorized("Access token and refresh token mismatch");
             }
@@ -151,7 +149,7 @@ namespace BytagrammAPI.Controllers
                 user = await _userService.GetByUsernameAsync(dto.Identifier);
             }
 
-            if (user == null) 
+            if (user == null)
                 return Unauthorized("Invalid Credentials");
 
             var isPasswordValid = await _userService.VerifyPasswordAsync(user, dto.Password);

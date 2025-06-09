@@ -11,26 +11,26 @@ namespace Bytagramm.Services
     {
         protected readonly ApiSettings _settings;
 
-        public AuthentificatedHttpClientHandler(IOptions<ApiSettings> options) 
+        public AuthentificatedHttpClientHandler(IOptions<ApiSettings> options)
         {
             _settings = options.Value;
         }
 
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) 
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var token = await SecureStorage.GetAsync("access_token");
 
-            if (!string.IsNullOrEmpty(token)) 
+            if (!string.IsNullOrEmpty(token))
             {
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
 
             var response = await base.SendAsync(request, cancellationToken);
 
-            if(response.StatusCode == HttpStatusCode.Unauthorized) 
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 var refreshed = await TryRefreshTokenAsync();
-                if (refreshed) 
+                if (refreshed)
                 {
                     token = await SecureStorage.GetAsync("access_token");
 
@@ -41,7 +41,7 @@ namespace Bytagramm.Services
             return response;
         }
 
-        private async Task<bool> TryRefreshTokenAsync() 
+        private async Task<bool> TryRefreshTokenAsync()
         {
             var accessToken = await SecureStorage.GetAsync("access_token");
             var refreshToken = await SecureStorage.GetAsync("refresh_token");

@@ -1,14 +1,8 @@
-﻿using Bytagramm.Models.Community;
-using Bytagramm.Models.Post;
+﻿using Bytagramm.Models.Post;
 using Bytagramm.Services.Abstractions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bytagramm.ViewModels.Community
 {
@@ -36,7 +30,7 @@ namespace Bytagramm.ViewModels.Community
         private readonly ICommunityApiService _communityApiService;
         private readonly IPostApiService _postApiService;
 
-        public CommunityDetailsViewModel(ICommunityApiService communityApiService, IPostApiService postApiService) 
+        public CommunityDetailsViewModel(ICommunityApiService communityApiService, IPostApiService postApiService)
         {
             _communityApiService = communityApiService;
             _postApiService = postApiService;
@@ -64,7 +58,7 @@ namespace Bytagramm.ViewModels.Community
                 }
                 var posts = community.Posts;
 
-                if (posts != null) 
+                if (posts != null)
                 {
                     Posts.Clear();
                     foreach (var post in posts)

@@ -1,7 +1,6 @@
 ﻿using BytagrammAPI.Data;
 using BytagrammAPI.Models;
 using BytagrammAPI.Repositories.Abstractions;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
@@ -16,7 +15,7 @@ namespace BytagrammAPI.Repositories.Implementations
 
         public override async Task<User> GetByIdAsync(string id)
         {
-            return await GetAllAsQueryable().Include(u => u.SubscribedCommunities).FirstAsync(u =>  u.Id == id);
+            return await GetAllAsQueryable().Include(u => u.SubscribedCommunities).FirstAsync(u => u.Id == id);
         }
 
         public async Task<User?> GetByEmailAsync(string email)

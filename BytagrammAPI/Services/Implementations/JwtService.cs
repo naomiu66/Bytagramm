@@ -60,7 +60,7 @@ namespace BytagrammAPI.Services.Implementations
             return principal;
         }
 
-        public async Task<User> ValidateRefreshTokenAsync(string refreshToken) 
+        public async Task<User> ValidateRefreshTokenAsync(string refreshToken)
         {
             var user = await _userService.GetByRefreshTokenAsync(refreshToken);
 

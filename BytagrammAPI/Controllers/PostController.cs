@@ -44,7 +44,7 @@ namespace BytagrammAPI.Controllers
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            if(userId == null) return Unauthorized();
+            if (userId == null) return Unauthorized();
 
             var posts = new Models.Post
             {

@@ -1,6 +1,5 @@
 
 using BytagrammAPI.Data;
-using BytagrammAPI.Data.Connections.RabbitMq;
 using BytagrammAPI.Data.Connections.Redis;
 using BytagrammAPI.Data.Settings;
 using BytagrammAPI.Models;

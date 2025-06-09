@@ -10,7 +10,7 @@ namespace BytagrammAPI.Services.Implementations
     {
         private readonly IRedisConnection _connection;
 
-        public UserSessionService(IRedisConnection connection) 
+        public UserSessionService(IRedisConnection connection)
         {
             _connection = connection;
         }
@@ -33,7 +33,7 @@ namespace BytagrammAPI.Services.Implementations
         public async Task<UserSession?> GetSessionAsync(string userId)
         {
             var db = await GetDatabase();
-            
+
             var json = await db.StringGetAsync(GetKey(userId));
 
             return json.IsNullOrEmpty ? null : JsonSerializer.Deserialize<UserSession>(json!);

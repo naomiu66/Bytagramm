@@ -1,6 +1,4 @@
-﻿using Bytagramm.Models;
-
-namespace Bytagramm.Models.Community
+﻿namespace Bytagramm.Models.Community
 {
     public class CreateCommunityDto
     {

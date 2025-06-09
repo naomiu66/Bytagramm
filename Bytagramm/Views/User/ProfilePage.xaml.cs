@@ -4,8 +4,8 @@ namespace Bytagramm;
 
 public partial class ProfilePage : ContentPage
 {
-	public ProfilePage()
-	{
+    public ProfilePage()
+    {
         InitializeComponent();
         var viewModel = MauiProgram.Current.GetService<ProfileViewModel>();
         BindingContext = viewModel;

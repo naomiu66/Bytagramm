@@ -12,7 +12,7 @@ namespace Bytagramm.ViewModels
     {
         private readonly ICommunityApiService _communityApiService;
 
-        public HomeViewModel(ICommunityApiService communityApiService) 
+        public HomeViewModel(ICommunityApiService communityApiService)
         {
             _communityApiService = communityApiService;
             SubscribedCommunities = new ObservableCollection<CommunityDto>();
@@ -22,13 +22,13 @@ namespace Bytagramm.ViewModels
         public ObservableCollection<CommunityDto> SubscribedCommunities { get; }
 
         [RelayCommand]
-        private async Task OpenProfile() 
+        private async Task OpenProfile()
         {
             await Shell.Current.GoToAsync($"///{nameof(ProfilePage)}");
         }
 
         [RelayCommand]
-        private async Task CreatePost() 
+        private async Task CreatePost()
         {
             await Shell.Current.GoToAsync($"///{nameof(CreatePostPage)}");
         }
@@ -43,11 +43,11 @@ namespace Bytagramm.ViewModels
         }
 
 
-        private async void LoadCommunities() 
+        private async void LoadCommunities()
         {
             var communities = await _communityApiService.GetAllAsync();
 
-            if (communities != null) 
+            if (communities != null)
             {
                 SubscribedCommunities.Clear();
                 foreach (var community in communities)

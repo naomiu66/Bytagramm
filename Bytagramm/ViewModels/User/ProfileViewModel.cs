@@ -3,11 +3,6 @@ using Bytagramm.Services.Abstractions;
 using Bytagramm.Views.Community;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bytagramm.ViewModels
 {
@@ -15,7 +10,7 @@ namespace Bytagramm.ViewModels
     {
         IUserApiService _userApiService;
 
-        public ProfileViewModel(IUserApiService userApiService) 
+        public ProfileViewModel(IUserApiService userApiService)
         {
             _userApiService = userApiService;
         }
@@ -25,7 +20,7 @@ namespace Bytagramm.ViewModels
             await InitializeAsync();
         }
 
-            [ObservableProperty]
+        [ObservableProperty]
         public string name;
 
         [ObservableProperty]
@@ -35,12 +30,12 @@ namespace Bytagramm.ViewModels
         public List<CreateCommunityDto> subscribedCommunities;
 
         [RelayCommand]
-        private async Task CreateCommunity() 
+        private async Task CreateCommunity()
         {
             await Shell.Current.GoToAsync($"///{nameof(CreateCommunityPage)}");
         }
 
-        public async Task InitializeAsync() 
+        public async Task InitializeAsync()
         {
             var user = await _userApiService.GetCurrentUserAsync();
 
@@ -50,7 +45,7 @@ namespace Bytagramm.ViewModels
                 Email = user.Email;
                 SubscribedCommunities = user.communities;
             }
-            else 
+            else
             {
                 Name = "None";
                 Email = "None";

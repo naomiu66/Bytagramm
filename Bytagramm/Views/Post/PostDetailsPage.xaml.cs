@@ -4,9 +4,9 @@ namespace Bytagramm.Views.Post;
 
 public partial class PostDetailsPage : ContentPage
 {
-	public PostDetailsPage()
-	{
-		InitializeComponent();
+    public PostDetailsPage()
+    {
+        InitializeComponent();
         var viewModel = MauiProgram.Current.GetService<PostDetailsViewModel>();
         BindingContext = viewModel;
     }

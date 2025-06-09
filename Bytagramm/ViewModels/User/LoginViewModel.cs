@@ -47,7 +47,7 @@ namespace Bytagramm.ViewModels
                 await Shell.Current.DisplayAlert("Error", "Fill all fields", "OK");
                 return;
             }
-            LoginDto dto = new LoginDto 
+            LoginDto dto = new LoginDto
             {
                 Identifier = UsernameOrEmail,
                 Password = Password,

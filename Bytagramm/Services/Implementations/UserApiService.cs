@@ -26,7 +26,7 @@ namespace Bytagramm.Services.Implementations
         {
             var response = await _httpClient.PostAsJsonAsync<RegisterDto>("api/User/register", user);
 
-            if (!response.IsSuccessStatusCode) 
+            if (!response.IsSuccessStatusCode)
             {
                 return false;
             }
@@ -54,7 +54,7 @@ namespace Bytagramm.Services.Implementations
                 Password = dto.Password,
             });
 
-            if (!response.IsSuccessStatusCode) 
+            if (!response.IsSuccessStatusCode)
             {
                 return false;
             }

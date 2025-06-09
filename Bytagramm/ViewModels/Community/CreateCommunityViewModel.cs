@@ -1,13 +1,7 @@
-﻿using Bytagramm.Models.User;
-using Bytagramm.Models.Community;
+﻿using Bytagramm.Models.Community;
 using Bytagramm.Services.Abstractions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bytagramm.ViewModels.Community
 {
@@ -15,7 +9,7 @@ namespace Bytagramm.ViewModels.Community
     {
         private readonly ICommunityApiService _communityApiService;
 
-        public CreateCommunityViewModel(ICommunityApiService communityApiService) 
+        public CreateCommunityViewModel(ICommunityApiService communityApiService)
         {
             _communityApiService = communityApiService;
         }
@@ -27,7 +21,7 @@ namespace Bytagramm.ViewModels.Community
         public string description;
 
         [RelayCommand]
-        private async Task Create() 
+        private async Task Create()
         {
             if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Description))
             {
@@ -48,7 +42,7 @@ namespace Bytagramm.ViewModels.Community
                 await Shell.Current.DisplayAlert("Success", "Your community is created", "OK");
                 await Shell.Current.GoToAsync($"///{nameof(ProfilePage)}");
             }
-            else 
+            else
             {
                 await Shell.Current.DisplayAlert("Error", "Something went wrong try again", "OK");
             }
