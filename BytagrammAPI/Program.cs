@@ -1,5 +1,8 @@
 
 using BytagrammAPI.Data;
+using BytagrammAPI.Data.Connections.RabbitMq;
+using BytagrammAPI.Data.Connections.Redis;
+using BytagrammAPI.Data.Settings;
 using BytagrammAPI.Models;
 using BytagrammAPI.Repositories.Abstractions;
 using BytagrammAPI.Repositories.Implementations;
@@ -69,7 +72,12 @@ namespace BytagrammAPI
                 options.Password.RequiredLength = 4;
             });
 #endif
+            // Register the Redis connection
+            builder.Services.Configure<RedisSettings>(builder.Configuration.GetSection("Redis"));
+            builder.Services.AddSingleton<IRedisConnection, RedisConnection>();
 
+
+            //Services
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
 
@@ -80,6 +88,8 @@ namespace BytagrammAPI
             builder.Services.AddScoped<ICommunityService, CommunityService>();
 
             builder.Services.AddScoped<IJwtService, JwtService>();
+
+            builder.Services.AddScoped<IUserSessionService, UserSessionService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

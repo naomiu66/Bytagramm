@@ -7,7 +7,7 @@ using System.Net.Http.Json;
 
 namespace Bytagramm.Services.Implementations
 {
-    class PostApiService : ApiService, IPostApiService
+    public class PostApiService : ApiService, IPostApiService
     {
 
         public PostApiService(IHttpClientFactory httpClientFactory, IOptions<ApiSettings> options) : base(httpClientFactory, options) { }

@@ -1,14 +1,45 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Bytagramm.Views.Community.CommunityDetailsPage"
-             Title="CommunityDetailsPage"
              xmlns:viewmodel="clr-namespace:Bytagramm.ViewModels.Community"
+             xmlns:postmodels="clr-namespace:Bytagramm.Models.Post"
+             x:Class="Bytagramm.Views.Community.CommunityDetailsPage"
              x:DataType="viewmodel:CommunityDetailsViewModel">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+
+    <ContentPage.Content>
+        <Grid Padding="10" ColumnSpacing="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Left panel -->
+            <ScrollView Grid.Column="0" BackgroundColor="#f9f9f9" Padding="10">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="{Binding Title}" FontSize="24" FontAttributes="Bold" TextColor="#666"/>
+                    <Label Text="{Binding Description}" FontSize="14" TextColor="#666"/>
+                    <Label Text="Members:" FontAttributes="Bold" TextColor="#666"/>
+                    <Label Text="{Binding MembersCount}" />
+                    <Label Text="Created:" FontAttributes="Bold" TextColor="#666"/>
+                    <Label Text="{Binding CreatedDate, StringFormat='{0:MMMM dd, yyyy}'}" />
+                    <Button Text="Join Community" />
+                </VerticalStackLayout>
+            </ScrollView>
+
+            <!-- Right panel -->
+            <CollectionView Grid.Column="1" ItemsSource="{Binding Posts}" BackgroundColor="#f9f9f9">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="postmodels:PostDto">
+                        <Frame Padding="5" Margin="0,5" HasShadow="True" CornerRadius="8" BackgroundColor="#f3f3f3">
+                            <VerticalStackLayout Spacing="5">
+                                <Label Text="{Binding Title}" FontSize="14" FontAttributes="Bold" />
+                                <Label Text="{Binding Content}" FontSize="12" />
+                                <Label Text="{Binding AuthorName}" FontSize="10" TextColor="#666" />
+                                <Label Text="{Binding CreatedDate, StringFormat='{}{0:dd MMM yyyy HH:mm}'}" FontSize="10" TextColor="#666" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </ContentPage.Content>
 </ContentPage>

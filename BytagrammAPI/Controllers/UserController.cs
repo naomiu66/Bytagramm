@@ -2,7 +2,9 @@
 using BytagrammAPI.Dto.Community;
 using BytagrammAPI.Dto.User;
 using BytagrammAPI.Models;
+using BytagrammAPI.Models.Redis;
 using BytagrammAPI.Services.Abstractions;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.JsonWebTokens;
@@ -18,11 +20,13 @@ namespace BytagrammAPI.Controllers
     {
         private readonly IUserService _userService;
         private readonly IJwtService _jwtService;
+        private readonly IUserSessionService _userSessionService;
 
-        public UserController(IUserService userService, IJwtService jwtService)
+        public UserController(IUserService userService, IJwtService jwtService, IUserSessionService userSessionService)
         {
             _userService = userService;
             _jwtService = jwtService;
+            _userSessionService = userSessionService;
         }
 
         [HttpGet("get-all")]
@@ -46,14 +50,14 @@ namespace BytagrammAPI.Controllers
 
             if (userId == null) return Unauthorized();
 
-            var user = await _userService.GetByIdAsync(userId);
+            var user = await _userSessionService.GetSessionAsync(userId);
 
             if (user == null) return NotFound();
 
-            List<CreateCommunityDto> dtoList = user.SubscribedCommunities
-                .Select(c => new CreateCommunityDto
+            List<CommunityDto> dtoList = user.SubscribedCommunities
+                .Select(c => new CommunityDto
                 {
-                    Name = c.Name,
+                    Title = c.Title,
                     Description = c.Description,
                 })
                 .ToList();
@@ -105,6 +109,8 @@ namespace BytagrammAPI.Controllers
                 return Unauthorized("Access token and refresh token mismatch");
             }
 
+            await CacheUserData(user);
+
             var newTokens = await _jwtService.GenerateTokens(user);
 
             return Ok(newTokens);
@@ -152,6 +158,8 @@ namespace BytagrammAPI.Controllers
             if (!isPasswordValid)
                 return Unauthorized("Invalid Credentials");
 
+            await CacheUserData(user);
+
             var tokens = await _jwtService.GenerateTokens(user);
 
             return Ok(tokens);
@@ -184,6 +192,27 @@ namespace BytagrammAPI.Controllers
 
             await _userService.DeleteAsync(id);
             return NoContent();
+        }
+
+        private async Task CacheUserData(User user)
+        {
+            List<CommunityDto> dtoList = user.SubscribedCommunities
+               .Select(c => new CommunityDto
+               {
+                   Title = c.Title,
+                   Description = c.Description,
+               })
+               .ToList();
+
+            var userSession = new UserSession
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                SubscribedCommunities = dtoList
+            };
+
+            await _userSessionService.SetSessionAsync(userSession);
         }
 
         private string ComputeSha256Hash(string rawData)

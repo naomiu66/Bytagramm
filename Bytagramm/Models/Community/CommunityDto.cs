@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bytagramm.Models.Post;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,8 @@ namespace Bytagramm.Models.Community
         public string Title { get; set; }
         public string Description { get; set; }
         public string AuthorId { get; set; }
+        public int MembersCount { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public List<PostDto> Posts { get; set; }
     }
 }

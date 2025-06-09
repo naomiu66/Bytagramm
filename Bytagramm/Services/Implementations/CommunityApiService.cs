@@ -6,19 +6,19 @@ using System.Net.Http.Json;
 
 namespace Bytagramm.Services
 {
-    class CommunityApiService : ApiService, ICommunityApiService
+    public class CommunityApiService : ApiService, ICommunityApiService
     {
 
         public CommunityApiService(IHttpClientFactory httpClientFactory, IOptions<ApiSettings> options) : base(httpClientFactory, options) { }
 
-        public async Task<List<CreateCommunityDto>?> GetAllAsync()
+        public async Task<List<CommunityDto>?> GetAllAsync()
         {
-            return await _httpClient.GetFromJsonAsync<List<CreateCommunityDto>>("api/Community/get-all");
+            return await _httpClient.GetFromJsonAsync<List<CommunityDto>>("api/Community/get-all");
         }
 
-        public async Task<CreateCommunityDto?> GetByIdAsync(string id)
+        public async Task<CommunityDto?> GetByIdAsync(string id)
         {
-            return await _httpClient.GetFromJsonAsync<CreateCommunityDto>($"api/Community/get/{id}");
+            return await _httpClient.GetFromJsonAsync<CommunityDto>($"api/Community/get/{id}");
         }
 
         public async Task<bool> CreateAsync(CreateCommunityDto community)
@@ -27,9 +27,9 @@ namespace Bytagramm.Services
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> UpdateAsync(string id, CreateCommunityDto community)
+        public async Task<bool> UpdateAsync(string id, CommunityDto community)
         {
-            var response = await _httpClient.PutAsJsonAsync<CreateCommunityDto>($"api/Community/update/{id}", community);
+            var response = await _httpClient.PutAsJsonAsync<CommunityDto>($"api/Community/update/{id}", community);
             return response.IsSuccessStatusCode;
         }
 

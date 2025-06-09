@@ -49,7 +49,7 @@ namespace BytagrammAPI.Controllers
             var community = new Models.Community
             {
                 Id = Guid.NewGuid().ToString(),
-                Name = dto.Name,
+                Title = dto.Name,
                 Description = dto.Description,
                 AuthorId = userId,
                 Created = DateTime.UtcNow
@@ -69,7 +69,7 @@ namespace BytagrammAPI.Controllers
 
             if (community == null) return NotFound();
 
-            community.Name = dto.Title ?? community.Name;
+            community.Title = dto.Title ?? community.Title;
             community.Description = dto.Description ?? community.Description;
 
             await _communityService.UpdateAsync(community);
