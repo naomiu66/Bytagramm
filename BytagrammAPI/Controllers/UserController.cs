@@ -18,13 +18,13 @@ namespace BytagrammAPI.Controllers
     {
         private readonly IUserService _userService;
         private readonly IJwtService _jwtService;
-        private readonly IUserSessionService _userSessionService;
+        private readonly ICacheService _cacheService;
 
-        public UserController(IUserService userService, IJwtService jwtService, IUserSessionService userSessionService)
+        public UserController(IUserService userService, IJwtService jwtService, ICacheService cacheService)
         {
             _userService = userService;
             _jwtService = jwtService;
-            _userSessionService = userSessionService;
+            _cacheService = cacheService;
         }
 
         [HttpGet("get-all")]
@@ -48,7 +48,7 @@ namespace BytagrammAPI.Controllers
 
             if (userId == null) return Unauthorized();
 
-            var user = await _userSessionService.GetSessionAsync(userId);
+            var user = await _cacheService.GetAsync<UserCache>(userId);
 
             if (user == null) return NotFound();
 
@@ -202,15 +202,18 @@ namespace BytagrammAPI.Controllers
                })
                .ToList();
 
-            var userSession = new UserSession
+            var userCache = new Cache<UserCache>
             {
-                Id = user.Id,
-                UserName = user.UserName,
-                Email = user.Email,
-                SubscribedCommunities = dtoList
+                Key = user.Id,
+                Payload = new UserCache 
+                {
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    SubscribedCommunities = dtoList
+                }
             };
 
-            await _userSessionService.SetSessionAsync(userSession);
+            await _cacheService.SetAsync(userCache);
         }
 
         private string ComputeSha256Hash(string rawData)
