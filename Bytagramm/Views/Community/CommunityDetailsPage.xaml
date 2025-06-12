@@ -1,7 +1,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:Bytagramm.ViewModels.Community"
-             xmlns:postmodels="clr-namespace:Bytagramm.Models.Post"
+             xmlns:postmodels="clr-namespace:Bytagramm.Dto.Post"
              x:Class="Bytagramm.Views.Community.CommunityDetailsPage"
              x:DataType="viewmodel:CommunityDetailsViewModel">
 
@@ -21,7 +21,7 @@
                     <Label Text="{Binding MembersCount}" />
                     <Label Text="Created:" FontAttributes="Bold" TextColor="#666"/>
                     <Label Text="{Binding CreatedDate, StringFormat='{0:MMMM dd, yyyy}'}" />
-                    <Button Text="Join Community" />
+                    <Button Text="Join Community" Command="{Binding SubscribeCommand}"/>
                 </VerticalStackLayout>
             </ScrollView>
 

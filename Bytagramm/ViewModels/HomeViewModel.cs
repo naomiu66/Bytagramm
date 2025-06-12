@@ -1,4 +1,5 @@
-﻿using Bytagramm.Models.Community;
+﻿using Bytagramm.Dto.Community;
+using Bytagramm.Dto.Post;
 using Bytagramm.Services.Abstractions;
 using Bytagramm.Views.Community;
 using Bytagramm.Views.Post;
@@ -10,16 +11,21 @@ namespace Bytagramm.ViewModels
 {
     public partial class HomeViewModel : ObservableObject
     {
-        private readonly ICommunityApiService _communityApiService;
+        private readonly IPostApiService _postApiService;
+        private readonly IUserApiService _userApiService;
 
-        public HomeViewModel(ICommunityApiService communityApiService)
+        public HomeViewModel(IPostApiService postApiService, IUserApiService userApiService)
         {
-            _communityApiService = communityApiService;
+            _postApiService = postApiService;
+            _userApiService = userApiService;
+
             SubscribedCommunities = new ObservableCollection<CommunityDto>();
-            LoadCommunities();
+            LoadPageContent();
         }
 
         public ObservableCollection<CommunityDto> SubscribedCommunities { get; }
+
+        public ObservableCollection<PostDto> Posts { get; }
 
         [RelayCommand]
         private async Task OpenProfile()
@@ -42,17 +48,43 @@ namespace Bytagramm.ViewModels
             }
         }
 
-
-        private async void LoadCommunities()
+        [RelayCommand]
+        private async Task CreateCommunity() 
         {
-            var communities = await _communityApiService.GetAllAsync();
+            await Shell.Current.GoToAsync($"///{nameof(CreateCommunityPage)}");
+        }
+
+        [RelayCommand]
+        private async Task OpenPost(PostDto selectedPost) 
+        {
+            if (selectedPost is not null)
+            {
+                await Shell.Current.GoToAsync($"{nameof(PostDetailsPage)}?postId={selectedPost.Id}");
+            }
+        }
+
+        private async void LoadPageContent()
+        {
+            var user = await _userApiService.GetCurrentUserAsync();
+            var communities = user.Communities;
 
             if (communities != null)
             {
                 SubscribedCommunities.Clear();
+
+                if (Posts != null) Posts.Clear();
+                
                 foreach (var community in communities)
                 {
                     SubscribedCommunities.Add(community);
+                    // TODO: show random posts from reccomendations
+                    if (community.Posts != null)
+                    {
+                        foreach (var post in community.Posts)
+                        {
+                            Posts.Add(post);
+                        }
+                    }
                 }
             }
         }

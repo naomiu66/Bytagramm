@@ -1,4 +1,4 @@
-﻿using Bytagramm.Models.Community;
+﻿using Bytagramm.Dto.Community;
 using Bytagramm.Services.Abstractions;
 using Bytagramm.Views.Community;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -27,13 +27,7 @@ namespace Bytagramm.ViewModels
         public string email;
 
         [ObservableProperty]
-        public List<CreateCommunityDto> subscribedCommunities;
-
-        [RelayCommand]
-        private async Task CreateCommunity()
-        {
-            await Shell.Current.GoToAsync($"///{nameof(CreateCommunityPage)}");
-        }
+        public List<CommunityDto> subscribedCommunities;
 
         public async Task InitializeAsync()
         {
@@ -43,7 +37,7 @@ namespace Bytagramm.ViewModels
             {
                 Name = user.UserName;
                 Email = user.Email;
-                SubscribedCommunities = user.communities;
+                SubscribedCommunities = user.Communities;
             }
             else
             {

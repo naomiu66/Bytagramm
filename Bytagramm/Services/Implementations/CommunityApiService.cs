@@ -1,4 +1,4 @@
-﻿using Bytagramm.Models.Community;
+﻿using Bytagramm.Dto.Community;
 using Bytagramm.Services.Abstractions;
 using Bytagramm.Settings;
 using Microsoft.Extensions.Options;

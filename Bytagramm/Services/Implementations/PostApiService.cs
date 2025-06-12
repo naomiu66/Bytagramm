@@ -1,4 +1,4 @@
-﻿using Bytagramm.Models.Post;
+﻿using Bytagramm.Dto.Post;
 using Bytagramm.Services.Abstractions;
 using Bytagramm.Settings;
 using Microsoft.Extensions.Options;

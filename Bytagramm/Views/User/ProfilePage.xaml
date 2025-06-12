@@ -30,22 +30,12 @@
                     <CollectionView ItemsSource="{Binding SubscribedCommunities}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Label Text="{Binding Name}" FontSize="16" />
+                                <Label Text="{Binding Name}" FontSize="16" TextColor="#333" />
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                 </VerticalStackLayout>
             </Frame>
-
-            <!-- Create Community Button -->
-            <Button Text="Create Community"
-                    Command="{Binding CreateCommunityCommand}"
-                    BackgroundColor="#FF4500"
-                    TextColor="White"
-                    FontAttributes="Bold"
-                    CornerRadius="8"
-                    HeightRequest="50"
-                    HorizontalOptions="FillAndExpand"/>
         </VerticalStackLayout>
     </ScrollView>
 

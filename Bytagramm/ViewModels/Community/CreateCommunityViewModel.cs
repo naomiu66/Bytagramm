@@ -1,4 +1,4 @@
-﻿using Bytagramm.Models.Community;
+﻿using Bytagramm.Dto.Community;
 using Bytagramm.Services.Abstractions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -40,7 +40,7 @@ namespace Bytagramm.ViewModels.Community
             if (response)
             {
                 await Shell.Current.DisplayAlert("Success", "Your community is created", "OK");
-                await Shell.Current.GoToAsync($"///{nameof(ProfilePage)}");
+                await Shell.Current.GoToAsync($"///{nameof(HomePage)}");
             }
             else
             {

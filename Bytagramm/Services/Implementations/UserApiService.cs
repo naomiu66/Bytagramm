@@ -1,5 +1,5 @@
-﻿using Bytagramm.Models;
-using Bytagramm.Models.User;
+﻿using Bytagramm.Dto;
+using Bytagramm.Dto.User;
 using Bytagramm.Services.Abstractions;
 using Bytagramm.Settings;
 using Microsoft.Extensions.Options;
@@ -34,9 +34,9 @@ namespace Bytagramm.Services.Implementations
             return true;
         }
 
-        public async Task<bool> UpdateAsync(string id, UserDto user)
+        public async Task<bool> UpdateAsync(UserDto user)
         {
-            var response = await _httpClient.PutAsJsonAsync($"api/User/update/{id}", user);
+            var response = await _httpClient.PutAsJsonAsync($"api/User/update", user);
             return response.IsSuccessStatusCode;
         }
 

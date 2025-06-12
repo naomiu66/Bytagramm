@@ -1,6 +1,6 @@
-﻿using Bytagramm.Models.Post;
+﻿using Bytagramm.Dto.Post;
 
-namespace Bytagramm.Models.Community
+namespace Bytagramm.Dto.Community
 {
     public class CommunityDto
     {

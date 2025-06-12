@@ -1,4 +1,4 @@
-﻿namespace Bytagramm.Models.Post
+﻿namespace Bytagramm.Dto.Post
 {
     public class CreatePostDto
     {

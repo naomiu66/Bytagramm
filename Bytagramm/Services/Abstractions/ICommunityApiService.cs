@@ -1,4 +1,4 @@
-﻿using Bytagramm.Models.Community;
+﻿using Bytagramm.Dto.Community;
 
 namespace Bytagramm.Services.Abstractions
 {

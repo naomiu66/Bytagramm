@@ -1,4 +1,4 @@
-﻿using Bytagramm.Models;
+﻿using Bytagramm.Dto;
 using Bytagramm.Settings;
 using Microsoft.Extensions.Options;
 using System.Net;

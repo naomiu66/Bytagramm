@@ -56,6 +56,8 @@ namespace Bytagramm
 
             builder.Services.AddScoped<ICommunityApiService, CommunityApiService>();
 
+            builder.Services.AddScoped<ISubscriptionApiService, SubscriptionApiService>();
+
 
             //Pages
             builder.Services.AddSingleton<MainPage>();

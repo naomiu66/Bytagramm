@@ -1,4 +1,7 @@
-﻿using Bytagramm.Models.Post;
+﻿using Bytagramm.Dto.Community;
+using Bytagramm.Dto.Post;
+using Bytagramm.Dto.Subscriptions;
+using Bytagramm.Dto.User;
 using Bytagramm.Services.Abstractions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -28,16 +31,30 @@ namespace Bytagramm.ViewModels.Community
         ObservableCollection<PostDto> posts = new();
 
         private readonly ICommunityApiService _communityApiService;
-        private readonly IPostApiService _postApiService;
+        private readonly ISubscriptionApiService _subscriptionApiService;
 
-        public CommunityDetailsViewModel(ICommunityApiService communityApiService, IPostApiService postApiService)
+        public CommunityDetailsViewModel(ICommunityApiService communityApiService, ISubscriptionApiService subscriptionApiService)
         {
             _communityApiService = communityApiService;
-            _postApiService = postApiService;
+            _subscriptionApiService = subscriptionApiService;
         }
 
         [RelayCommand]
-        private async Task Subscribe() { }
+        private async Task Subscribe() 
+        {
+            var dto = new NewCommunitySubscriptionDto { CommunityId = CommunityId };
+
+            var response = await _subscriptionApiService.Subscribe(dto);
+
+            if (response) 
+            {
+                await Shell.Current.DisplayAlert("Success", "You subscribed on this community", "OK");
+            }
+            else 
+            {
+                await Shell.Current.DisplayAlert("Error", "Something went wrong...", "OK");
+            }
+        }
 
         partial void OnCommunityIdChanged(string value)
         {

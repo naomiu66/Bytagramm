@@ -1,4 +1,4 @@
-﻿namespace Bytagramm.Models
+﻿namespace Bytagramm.Dto
 {
     public class TokenDto
     {

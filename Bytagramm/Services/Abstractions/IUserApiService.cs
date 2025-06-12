@@ -1,4 +1,4 @@
-﻿using Bytagramm.Models.User;
+﻿using Bytagramm.Dto.User;
 
 namespace Bytagramm.Services.Abstractions
 {
@@ -8,7 +8,7 @@ namespace Bytagramm.Services.Abstractions
         public Task<UserDto?> GetByIdAsync(string id);
         public Task<bool> CreateAsync(RegisterDto user);
         public Task<ProfileDto?> GetCurrentUserAsync();
-        public Task<bool> UpdateAsync(string id, UserDto user);
+        public Task<bool> UpdateAsync(UserDto user);
         public Task<bool> DeleteAsync(string id);
         public Task<bool> LoginAsync(LoginDto dto);
     }

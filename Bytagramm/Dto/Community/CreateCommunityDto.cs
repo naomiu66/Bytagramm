@@ -1,4 +1,4 @@
-﻿namespace Bytagramm.Models.Community
+﻿namespace Bytagramm.Dto.Community
 {
     public class CreateCommunityDto
     {

@@ -1,4 +1,4 @@
-﻿namespace Bytagramm.Models.User
+﻿namespace Bytagramm.Dto.User
 {
     public class RegisterDto
     {
