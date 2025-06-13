@@ -6,6 +6,6 @@ namespace BytagrammAPI.Models.Redis
     {
         public string UserName { get; set; }
         public string Email { get; set; }
-        public List<CommunityDto> SubscribedCommunities { get; set; }
+        public required List<CommunityDto> SubscribedCommunities { get; set; }
     }
 }

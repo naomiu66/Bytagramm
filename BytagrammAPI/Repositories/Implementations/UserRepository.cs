@@ -20,17 +20,17 @@ namespace BytagrammAPI.Repositories.Implementations
 
         public async Task<User?> GetByEmailAsync(string email)
         {
-            return await GetAllAsQueryable().FirstOrDefaultAsync(u => u.Email == email);
+            return await GetAllAsQueryable().Include(u => u.SubscribedCommunities).FirstOrDefaultAsync(u => u.Email == email);
         }
 
         public async Task<User> GetByRefreshTokenAsync(string refreshToken)
         {
-            return await GetAllAsQueryable().FirstOrDefaultAsync(u => u.RefreshToken == refreshToken && u.RefreshTokenExpiryTime > DateTime.UtcNow);
+            return await GetAllAsQueryable().Include(u => u.SubscribedCommunities).FirstOrDefaultAsync(u => u.RefreshToken == refreshToken && u.RefreshTokenExpiryTime > DateTime.UtcNow);
         }
 
         public async Task<User> GetByUsernameAsync(string username)
         {
-            return await GetAllAsQueryable().FirstOrDefaultAsync(u => u.UserName == username);
+            return await GetAllAsQueryable().Include(u => u.SubscribedCommunities).FirstOrDefaultAsync(u => u.UserName == username);
         }
 
         public async Task<bool> VerifyPasswordAsync(User user, string password)

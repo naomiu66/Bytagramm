@@ -66,6 +66,13 @@ namespace Bytagramm.ViewModels
         private async void LoadPageContent()
         {
             var user = await _userApiService.GetCurrentUserAsync();
+            
+            if (user == null) 
+            {
+                await Shell.Current.DisplayAlert("Error", "Unauthorized user", "OK");
+                await Shell.Current.GoToAsync($"///{nameof(MainPage)}");
+            }
+
             var communities = user.Communities;
 
             if (communities != null)

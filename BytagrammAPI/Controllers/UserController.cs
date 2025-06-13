@@ -1,6 +1,7 @@
 ﻿using BytagrammAPI.Dto;
 using BytagrammAPI.Dto.Community;
 using BytagrammAPI.Dto.User;
+using BytagrammAPI.Extensions;
 using BytagrammAPI.Models;
 using BytagrammAPI.Models.Redis;
 using BytagrammAPI.Services.Abstractions;
@@ -44,7 +45,7 @@ namespace BytagrammAPI.Controllers
         [HttpGet("get-me")]
         public async Task<IActionResult> GetCurrentUser()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = this.GetUserId();
 
             if (userId == null) return Unauthorized();
 
@@ -52,11 +53,14 @@ namespace BytagrammAPI.Controllers
 
             if (user == null) return NotFound();
 
+
             List<CommunityDto> dtoList = user.SubscribedCommunities
                 .Select(c => new CommunityDto
                 {
+                    Id = c.Id,
                     Title = c.Title,
                     Description = c.Description,
+                    AuthorId = c.AuthorId,
                 })
                 .ToList();
 
@@ -107,7 +111,7 @@ namespace BytagrammAPI.Controllers
                 return Unauthorized("Access token and refresh token mismatch");
             }
 
-            await CacheUserData(user);
+            await CacheUserDataAsync(user);
 
             var newTokens = await _jwtService.GenerateTokens(user);
 
@@ -129,6 +133,8 @@ namespace BytagrammAPI.Controllers
             };
 
             await _userService.AddAsync(user);
+
+            await CacheUserDataAsync(user);
 
             return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
         }
@@ -156,18 +162,24 @@ namespace BytagrammAPI.Controllers
             if (!isPasswordValid)
                 return Unauthorized("Invalid Credentials");
 
-            await CacheUserData(user);
+            await CacheUserDataAsync(user);
 
             var tokens = await _jwtService.GenerateTokens(user);
 
             return Ok(tokens);
         }
 
+        [Authorize]
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateUser(string id, [FromBody] RegisterDto dto)
         {
             if (dto == null)
                 return BadRequest();
+
+            var currentUserId = this.GetUserId();
+
+            if (currentUserId != id)
+                return Forbid();
 
             var user = await _userService.GetByIdAsync(id);
 
@@ -192,13 +204,15 @@ namespace BytagrammAPI.Controllers
             return NoContent();
         }
 
-        private async Task CacheUserData(User user)
+        private async Task CacheUserDataAsync(User user)
         {
             List<CommunityDto> dtoList = user.SubscribedCommunities
                .Select(c => new CommunityDto
                {
+                   Id = c.Id,
                    Title = c.Title,
                    Description = c.Description,
+                   AuthorId = c.AuthorId,
                })
                .ToList();
 

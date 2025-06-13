@@ -35,25 +35,23 @@ namespace BytagrammAPI.Controllers
 
             var community = await _communityService.GetByIdAsync(newCommunitySubscription.CommunityId);
 
-            user.SubscribedCommunities.Add(community);
+            if (!user.SubscribedCommunities.Any(c => c.Id == community.Id))
+            {
+                user.SubscribedCommunities.Add(community);
+            }
+
+
+            await _userService.UpdateAsync(user);
 
             List<CommunityDto> dtoList = user.SubscribedCommunities
                .Select(c => new CommunityDto
                {
+                   Id = c.Id,
                    Title = c.Title,
                    Description = c.Description,
+                   AuthorId = c.AuthorId,
                })
                .ToList();
-
-            var communityDto = new CommunityDto
-            {
-                Id = community.Id,
-                AuthorId = community.AuthorId,
-                Description = community.Description,
-                Title = community.Title
-            };
-
-            dtoList.Add(communityDto);
 
             var cachedUser = new Cache<UserCache>
             {
@@ -67,8 +65,6 @@ namespace BytagrammAPI.Controllers
             };
 
             await _cacheService.SetAsync(cachedUser);
-
-            await _userService.UpdateAsync(user);
 
             return Ok();
         }
