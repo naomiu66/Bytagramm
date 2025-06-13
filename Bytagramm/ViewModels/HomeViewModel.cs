@@ -44,7 +44,7 @@ namespace Bytagramm.ViewModels
         {
             if (selectedCommunity is not null)
             {
-                await Shell.Current.GoToAsync($"{nameof(CommunityDetailsPage)}?communityId={selectedCommunity.Id}");
+                await Shell.Current.GoToAsync($"///{nameof(CommunityDetailsPage)}?communityId={selectedCommunity.Id}");
             }
         }
 
@@ -59,7 +59,7 @@ namespace Bytagramm.ViewModels
         {
             if (selectedPost is not null)
             {
-                await Shell.Current.GoToAsync($"{nameof(PostDetailsPage)}?postId={selectedPost.Id}");
+                await Shell.Current.GoToAsync($"///{nameof(PostDetailsPage)}?postId={selectedPost.Id}");
             }
         }
 
@@ -73,7 +73,7 @@ namespace Bytagramm.ViewModels
                 await Shell.Current.GoToAsync($"///{nameof(MainPage)}");
             }
 
-            var communities = user.Communities;
+            var communities = user.SubscribedCommunities;
 
             if (communities != null)
             {

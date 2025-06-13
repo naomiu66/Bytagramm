@@ -2,8 +2,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:Bytagramm.ViewModels.Community"
              xmlns:postmodels="clr-namespace:Bytagramm.Dto.Post"
+             xmlns:converters="clr-namespace:Bytagramm.Converters"
              x:Class="Bytagramm.Views.Community.CommunityDetailsPage"
              x:DataType="viewmodel:CommunityDetailsViewModel">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.Content>
         <Grid Padding="10" ColumnSpacing="20">
@@ -21,7 +28,14 @@
                     <Label Text="{Binding MembersCount}" />
                     <Label Text="Created:" FontAttributes="Bold" TextColor="#666"/>
                     <Label Text="{Binding CreatedDate, StringFormat='{0:MMMM dd, yyyy}'}" />
-                    <Button Text="Join Community" Command="{Binding SubscribeCommand}"/>
+                    
+                    <Button Text="Join Community" 
+                            Command="{Binding SubscribeCommand}"
+                            IsVisible="{Binding IsSubscribed, Converter={StaticResource InverseBoolConverter}}"/>
+                    
+                    <Button Text="Leave Community"
+                            Command="{Binding UnsubscribeCommand}"
+                            IsVisible="{Binding IsSubscribed}"/>
                 </VerticalStackLayout>
             </ScrollView>
 

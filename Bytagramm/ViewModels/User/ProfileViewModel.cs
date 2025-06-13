@@ -37,7 +37,7 @@ namespace Bytagramm.ViewModels
             {
                 Name = user.UserName;
                 Email = user.Email;
-                SubscribedCommunities = user.Communities;
+                SubscribedCommunities = user.SubscribedCommunities;
             }
             else
             {

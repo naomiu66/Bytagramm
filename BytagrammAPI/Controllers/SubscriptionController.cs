@@ -26,8 +26,52 @@ namespace BytagrammAPI.Controllers
         }
 
         [Authorize]
+        [HttpPost("unsubscribe")]
+        public async Task<IActionResult> Unsubscribe([FromBody] CommunitySubscription communitySubscription) 
+        {
+            var userId = this.GetUserId();
+
+            var user = await _userService.GetByIdAsync(userId);
+
+            var community = await _communityService.GetByIdAsync(communitySubscription.CommunityId);
+
+            if(user.SubscribedCommunities.Any(c => c.Id == community.Id)) 
+            {
+                var response = user.SubscribedCommunities.Remove(community);
+                Console.WriteLine($"Unsubscribed: {response}");
+            }
+
+            await _userService.UpdateAsync(user);
+
+            List<CommunityDto> dtoList = user.SubscribedCommunities
+               .Select(c => new CommunityDto
+               {
+                   Id = c.Id,
+                   Title = c.Title,
+                   Description = c.Description,
+                   AuthorId = c.AuthorId,
+               })
+               .ToList();
+
+            var cachedUser = new Cache<UserCache>
+            {
+                Key = userId,
+                Payload = new UserCache
+                {
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    SubscribedCommunities = dtoList
+                }
+            };
+
+            await _cacheService.SetAsync(cachedUser);
+
+            return Ok();
+        }
+
+        [Authorize]
         [HttpPost("subscribe")]
-        public async Task<IActionResult> Subscribe([FromBody] NewCommunitySubscription newCommunitySubscription) 
+        public async Task<IActionResult> Subscribe([FromBody] CommunitySubscription newCommunitySubscription) 
         {
             var userId = this.GetUserId();
 

@@ -30,25 +30,47 @@ namespace Bytagramm.ViewModels.Community
         [ObservableProperty]
         ObservableCollection<PostDto> posts = new();
 
+        [ObservableProperty]
+        private bool isSubscribed;
+
         private readonly ICommunityApiService _communityApiService;
+        private readonly IUserApiService _userApiService;
         private readonly ISubscriptionApiService _subscriptionApiService;
 
-        public CommunityDetailsViewModel(ICommunityApiService communityApiService, ISubscriptionApiService subscriptionApiService)
+        public CommunityDetailsViewModel(ICommunityApiService communityApiService, IUserApiService userApiService, ISubscriptionApiService subscriptionApiService)
         {
             _communityApiService = communityApiService;
+            _userApiService = userApiService;
             _subscriptionApiService = subscriptionApiService;
+        }
+
+        [RelayCommand]
+        private async Task Unsubscribe() 
+        {
+            var dto = new CommunitySubscriptionDto { CommunityId = CommunityId };
+
+            var response = await _subscriptionApiService.Unsubscribe(dto);
+
+            if (response)
+            {
+                IsSubscribed = false;
+            }
+            else
+            {
+                await Shell.Current.DisplayAlert("Error", "Something went wrong...", "OK");
+            }
         }
 
         [RelayCommand]
         private async Task Subscribe() 
         {
-            var dto = new NewCommunitySubscriptionDto { CommunityId = CommunityId };
+            var dto = new CommunitySubscriptionDto { CommunityId = CommunityId };
 
             var response = await _subscriptionApiService.Subscribe(dto);
 
             if (response) 
             {
-                await Shell.Current.DisplayAlert("Success", "You subscribed on this community", "OK");
+                IsSubscribed = true;
             }
             else 
             {
@@ -65,6 +87,10 @@ namespace Bytagramm.ViewModels.Community
         {
             try
             {
+                var user = await _userApiService.GetCurrentUserAsync();
+
+                IsSubscribed = user.SubscribedCommunities.Any(c => c.Id == id);
+
                 var community = await _communityApiService.GetByIdAsync(id);
                 if (community != null)
                 {

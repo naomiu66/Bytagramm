@@ -9,6 +9,7 @@ namespace Bytagramm.Services.Abstractions
 {
     public interface ISubscriptionApiService
     {
-        public Task<bool> Subscribe(NewCommunitySubscriptionDto dto);
+        public Task<bool> Subscribe(CommunitySubscriptionDto dto);
+        public Task<bool> Unsubscribe(CommunitySubscriptionDto dto);
     }
 }

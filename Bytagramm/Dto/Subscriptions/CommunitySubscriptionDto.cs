@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bytagramm.Dto.Subscriptions
 {
-    public class NewCommunitySubscriptionDto
+    public class CommunitySubscriptionDto
     {
         public string CommunityId { get; set; }
     }

@@ -68,7 +68,7 @@ namespace BytagrammAPI.Controllers
             {
                 UserName = user.UserName,
                 Email = user.Email,
-                Communities = dtoList
+                SubscribedCommunities = dtoList
             };
             return Ok(dto);
         }

@@ -17,9 +17,21 @@ namespace Bytagramm.Services.Implementations
         {
         }
 
-        public async Task<bool> Subscribe(NewCommunitySubscriptionDto dto)
+        public async Task<bool> Subscribe(CommunitySubscriptionDto dto)
         {
-            var response = await _httpClient.PostAsJsonAsync<NewCommunitySubscriptionDto>("api/Subscription/subscribe", dto);
+            var response = await _httpClient.PostAsJsonAsync<CommunitySubscriptionDto>("api/Subscription/subscribe", dto);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task<bool> Unsubscribe(CommunitySubscriptionDto dto)
+        {
+            var response = await _httpClient.PostAsJsonAsync<CommunitySubscriptionDto>("api/Subscription/unsubscribe", dto);
 
             if (!response.IsSuccessStatusCode)
             {
