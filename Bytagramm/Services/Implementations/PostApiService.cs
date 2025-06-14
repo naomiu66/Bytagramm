@@ -22,9 +22,9 @@ namespace Bytagramm.Services.Implementations
             return await _httpClient.GetFromJsonAsync<PostDto>($"api/Post/get/{id}");
         }
 
-        public async Task<bool> CreateAsync(PostDto post)
+        public async Task<bool> CreateAsync(CreatePostDto post)
         {
-            var response = await _httpClient.PostAsJsonAsync<PostDto>("api/Post/create", post);
+            var response = await _httpClient.PostAsJsonAsync<CreatePostDto>("api/Post/create", post);
             return response.IsSuccessStatusCode;
         }
 

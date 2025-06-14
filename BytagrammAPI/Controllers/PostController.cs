@@ -1,7 +1,10 @@
 ﻿using BytagrammAPI.Dto.Post;
+using BytagrammAPI.Models;
 using BytagrammAPI.Services.Abstractions;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
 
 namespace BytagrammAPI.Controllers
@@ -24,8 +27,22 @@ namespace BytagrammAPI.Controllers
 
             if (posts == null || !posts.Any()) return NotFound();
 
-            return Ok(posts);
+            List<PostDto> dtoList = posts
+               .Select(p => new PostDto
+               {
+                   Id = p.Id,
+                   Title = p.Title,
+                   Content = p.Content,
+                   AuthorId = p.AuthorId,
+                   AuthorName = p.Author.UserName,
+                   CreatedDate = p.CreatedDate,
+                   CommunityId = p.CommunityId,
+               })
+               .ToList();
+
+            return Ok(dtoList);
         }
+
         [HttpGet("get/{id}")]
         public async Task<IActionResult> GetPostById(string id)
         {
@@ -33,7 +50,18 @@ namespace BytagrammAPI.Controllers
 
             if (post == null) return NotFound();
 
-            return Ok(post);
+            var dto = new PostDto
+            {
+                Id = id,
+                Title = post.Title,
+                Content = post.Content,
+                AuthorId = post.AuthorId,
+                AuthorName = post.Author.UserName,
+                CreatedDate = post.CreatedDate,
+                CommunityId = post.CommunityId,
+            };
+
+            return Ok(dto);
         }
 
         [Authorize]
@@ -46,7 +74,7 @@ namespace BytagrammAPI.Controllers
 
             if (userId == null) return Unauthorized();
 
-            var posts = new Models.Post
+            var post = new Models.Post
             {
                 Id = Guid.NewGuid().ToString(),
                 Title = dto.Title,
@@ -56,9 +84,9 @@ namespace BytagrammAPI.Controllers
                 CreatedDate = DateTime.UtcNow
             };
 
-            await _postService.AddAsync(posts);
+            await _postService.AddAsync(post);
 
-            return Ok(posts);
+            return Ok(post);
         }
 
         [HttpPut("update/{id}")]

@@ -3,6 +3,7 @@ using Bytagramm.Dto.Post;
 using Bytagramm.Dto.Subscriptions;
 using Bytagramm.Dto.User;
 using Bytagramm.Services.Abstractions;
+using Bytagramm.Views.Post;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
@@ -75,6 +76,21 @@ namespace Bytagramm.ViewModels.Community
             else 
             {
                 await Shell.Current.DisplayAlert("Error", "Something went wrong...", "OK");
+            }
+        }
+
+        [RelayCommand]
+        private async Task CreatePost() 
+        {
+            await Shell.Current.GoToAsync($"///{nameof(CreatePostPage)}?communityId={CommunityId}");
+        }
+
+        [RelayCommand]
+        private async Task OpenPost(PostDto selectedPost)
+        {
+            if (selectedPost is not null)
+            {
+                await Shell.Current.GoToAsync($"///{nameof(PostDetailsPage)}?postId={selectedPost.Id}");
             }
         }
 

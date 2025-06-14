@@ -38,7 +38,15 @@ namespace BytagrammAPI.Controllers
                 return NotFound();
             }
 
-            return Ok(users);
+            List<UserDto> dtoList = users
+                .Select(u => new UserDto 
+                {
+                    Id = u.Id,
+                    UserName = u.UserName,
+                    Email = u.Email
+                }).ToList();
+
+            return Ok(dtoList);
         }
 
         [Authorize]
@@ -82,6 +90,13 @@ namespace BytagrammAPI.Controllers
             {
                 return NotFound();
             }
+
+            var dto = new UserDto
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email
+            };
 
             return Ok(user);
         }

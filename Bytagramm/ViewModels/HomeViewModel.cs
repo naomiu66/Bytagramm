@@ -20,6 +20,7 @@ namespace Bytagramm.ViewModels
             _userApiService = userApiService;
 
             SubscribedCommunities = new ObservableCollection<CommunityDto>();
+            Posts = new ObservableCollection<PostDto>();
             LoadPageContent();
         }
 
@@ -75,23 +76,25 @@ namespace Bytagramm.ViewModels
 
             var communities = user.SubscribedCommunities;
 
+            var posts = await _postApiService.GetAllAsync();
+
             if (communities != null)
             {
                 SubscribedCommunities.Clear();
-
-                if (Posts != null) Posts.Clear();
                 
                 foreach (var community in communities)
                 {
                     SubscribedCommunities.Add(community);
-                    // TODO: show random posts from reccomendations
-                    if (community.Posts != null)
-                    {
-                        foreach (var post in community.Posts)
-                        {
-                            Posts.Add(post);
-                        }
-                    }
+                }
+            }
+
+            if(posts != null) 
+            {
+                Posts.Clear();
+
+                foreach(var post in posts) 
+                {
+                    Posts.Add(post);
                 }
             }
         }

@@ -4,11 +4,50 @@
              x:Class="Bytagramm.Views.Post.PostDetailsPage"
              Title="PostDetailsPage"
              xmlns:viewmodel="clr-namespace:Bytagramm.ViewModels.Post"
-             x:DataType="viewmodel:PostDetailsViewModel">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             x:DataType="viewmodel:PostDetailsViewModel"
+             BackgroundColor="#f6f7f8">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <!-- Post Info Section -->
+            <Frame BackgroundColor="White" 
+                   Padding="18" 
+                   CornerRadius="12" 
+                   HasShadow="True"
+                   BorderColor="#ddd">
+                
+                <VerticalStackLayout Spacing="12">
+                    
+                    <Label Text="{Binding Title}" 
+                           FontSize="22"
+                           FontAttributes="Bold"
+                           TextColor="#222" />
+                    
+                    <Label Text="{Binding Content}" 
+                           FontSize="16" 
+                           TextColor="#444"
+                           LineBreakMode="WordWrap"/>
+
+                    <HorizontalStackLayout Spacing="8">
+                        <Label Text="{Binding AuthorName}"
+                               FontSize="12" 
+                               TextColor="#888" />
+                        <Label Text="."
+                               FontSize="12"
+                               TextColor="#888"/>
+                        <Label Text="{Binding CreatedDate, StringFormat='{}{0:MMMM dd, yyyy HH:mm}'}"
+                               FontSize="12"
+                               TextColor="#888"/>
+                    </HorizontalStackLayout>
+ 
+                </VerticalStackLayout>
+                   
+            </Frame>
+
+            <!-- Comments -->
+
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>

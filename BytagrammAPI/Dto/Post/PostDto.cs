@@ -7,6 +7,7 @@
         public string Content { get; set; }
         public string CommunityId { get; set; }
         public string AuthorId { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public string AuthorName { get; set; }
+        public DateTime? CreatedDate { get; set; }
     }
 }

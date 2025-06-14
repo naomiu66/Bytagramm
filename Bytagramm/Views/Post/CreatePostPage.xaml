@@ -5,11 +5,75 @@
              Title="CreatePostPage"
              xmlns:viewmodel="clr-namespace:Bytagramm.ViewModels.Post"
              x:DataType="viewmodel:CreatePostViewModel">
-    
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+
+    <ScrollView>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Frame Grid.Row="1"
+                   Grid.Column="1"
+                   BackgroundColor="White"
+                   CornerRadius="20"
+                   Padding="30"
+                   WidthRequest="320"
+                   HasShadow="True"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center">
+
+                <VerticalStackLayout Spacing="20"
+                                     HorizontalOptions="Fill"
+                                     VerticalOptions="Center">
+
+                    <!-- Title -->
+                    <Label Text="Create Post"
+                           FontSize="28"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="#333"/>
+
+                    <!-- Post Title -->
+                    <Entry Placeholder="Title"
+                           Text="{Binding Title}"
+                           FontSize="16"
+                           BackgroundColor="#F9F9F9"
+                           TextColor="#000"
+                           PlaceholderColor="#888"
+                           HeightRequest="50"
+                           HorizontalOptions="FillAndExpand"/>
+
+                    <!-- Post Content -->
+                    <Editor Placeholder="Content"
+                            Text="{Binding Content}"
+                            FontSize="16"
+                            BackgroundColor="#F9F9F9"
+                            TextColor="#000"
+                            PlaceholderColor="#888"
+                            AutoSize="TextChanges"
+                            HeightRequest="100"
+                            HorizontalOptions="FillAndExpand"/>
+
+                    <!-- Create Button -->
+                    <Button Text="Create"
+                            Command="{Binding CreateCommand}"
+                            BackgroundColor="#FF4500"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            HeightRequest="50"
+                            CornerRadius="10"
+                            HorizontalOptions="FillAndExpand"/>
+                </VerticalStackLayout>
+
+            </Frame>
+        </Grid>
+    </ScrollView>
 </ContentPage>

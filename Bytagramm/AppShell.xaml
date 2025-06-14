@@ -51,7 +51,7 @@
         ContentTemplate="{DataTemplate community:CreateCommunityPage}"
         Route="CreateCommunityPage"/>
     <ShellContent
-        Title="PostDetailsPage"
+        Title="CommunityDetailsPage"
         ContentTemplate="{DataTemplate community:CommunityDetailsPage}"
         Route="CommunityDetailsPage"/>
 

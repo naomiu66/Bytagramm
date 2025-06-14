@@ -4,7 +4,8 @@
              xmlns:postmodels="clr-namespace:Bytagramm.Dto.Post"
              xmlns:converters="clr-namespace:Bytagramm.Converters"
              x:Class="Bytagramm.Views.Community.CommunityDetailsPage"
-             x:DataType="viewmodel:CommunityDetailsViewModel">
+             x:DataType="viewmodel:CommunityDetailsViewModel"
+             BackgroundColor="#f6f7f8">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -13,47 +14,115 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <Grid Padding="10" ColumnSpacing="20">
+        <Grid Padding="10" ColumnSpacing="20" RowSpacing="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <!-- Left panel -->
-            <ScrollView Grid.Column="0" BackgroundColor="#f9f9f9" Padding="10">
-                <VerticalStackLayout Spacing="15">
-                    <Label Text="{Binding Title}" FontSize="24" FontAttributes="Bold" TextColor="#666"/>
-                    <Label Text="{Binding Description}" FontSize="14" TextColor="#666"/>
-                    <Label Text="Members:" FontAttributes="Bold" TextColor="#666"/>
-                    <Label Text="{Binding MembersCount}" />
-                    <Label Text="Created:" FontAttributes="Bold" TextColor="#666"/>
-                    <Label Text="{Binding CreatedDate, StringFormat='{0:MMMM dd, yyyy}'}" />
-                    
-                    <Button Text="Join Community" 
-                            Command="{Binding SubscribeCommand}"
-                            IsVisible="{Binding IsSubscribed, Converter={StaticResource InverseBoolConverter}}"/>
-                    
-                    <Button Text="Leave Community"
-                            Command="{Binding UnsubscribeCommand}"
-                            IsVisible="{Binding IsSubscribed}"/>
-                </VerticalStackLayout>
+            <!-- Sidebar -->
+            <ScrollView Grid.Column="0" Grid.RowSpan="2">
+                <Frame BackgroundColor="White" CornerRadius="16" Padding="15" HasShadow="True">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="{Binding Title}" FontSize="24" FontAttributes="Bold" TextColor="#222"/>
+                        <Label Text="{Binding Description}" FontSize="14" TextColor="#555"/>
+
+                        <BoxView HeightRequest="1" Color="#ddd" />
+
+                        <Label Text="Members:" FontAttributes="Bold" TextColor="#666"/>
+                        <Label Text="{Binding MembersCount}" TextColor="#333"/>
+
+                        <Label Text="Created:" FontAttributes="Bold" TextColor="#666"/>
+                        <Label Text="{Binding CreatedDate, StringFormat='{0:MMMM dd, yyyy}'}" TextColor="#333"/>
+
+                        <BoxView HeightRequest="1" Color="#ddd" />
+
+                        <Button Text="Join Community" 
+                                Command="{Binding SubscribeCommand}"
+                                IsVisible="{Binding IsSubscribed, Converter={StaticResource InverseBoolConverter}}"
+                                BackgroundColor="#FF5700"
+                                TextColor="White"
+                                FontAttributes="Bold"
+                                CornerRadius="10"
+                                HeightRequest="45"/>
+
+                        <Button Text="Leave Community"
+                                Command="{Binding UnsubscribeCommand}"
+                                IsVisible="{Binding IsSubscribed}"
+                                BackgroundColor="#888"
+                                TextColor="White"
+                                FontAttributes="Bold"
+                                CornerRadius="10"
+                                HeightRequest="45"/>
+                    </VerticalStackLayout>
+                </Frame>
             </ScrollView>
 
-            <!-- Right panel -->
-            <CollectionView Grid.Column="1" ItemsSource="{Binding Posts}" BackgroundColor="#f9f9f9">
+            <!-- Create Post -->
+            <VerticalStackLayout Grid.Column="1" Grid.Row="0" Padding="0">
+                <Button Text="Create Post"
+                        BackgroundColor="#FF5700"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        CornerRadius="12"
+                        HeightRequest="50"
+                        HorizontalOptions="FillAndExpand"
+                        Command="{Binding CreatePostCommand}"/>
+            </VerticalStackLayout>
+
+
+            <!-- Right pannel - Posts -->
+            <CollectionView ItemsSource="{Binding Posts}"
+                Grid.Column="1"
+                Grid.Row="1"
+                SelectionMode="None"
+                BackgroundColor="Transparent">
+
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="postmodels:PostDto">
-                        <Frame Padding="5" Margin="0,5" HasShadow="True" CornerRadius="8" BackgroundColor="#f3f3f3">
-                            <VerticalStackLayout Spacing="5">
-                                <Label Text="{Binding Title}" FontSize="14" FontAttributes="Bold" />
-                                <Label Text="{Binding Content}" FontSize="12" />
-                                <Label Text="{Binding AuthorName}" FontSize="10" TextColor="#666" />
-                                <Label Text="{Binding CreatedDate, StringFormat='{}{0:dd MMM yyyy HH:mm}'}" FontSize="10" TextColor="#666" />
+                        <Frame Padding="15" Margin="0,10"
+                               HasShadow="True"
+                               CornerRadius="12"
+                               BackgroundColor="#e0e0e0">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding Source={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPage}}, Path=BindingContext.OpenPostCommand}"
+                                    CommandParameter="{Binding .}" />
+                            </Frame.GestureRecognizers>
+
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="{Binding Title}"
+                                       FontSize="16"
+                                       FontAttributes="Bold"
+                                       TextColor="#222" />
+
+                                <Label Text="{Binding Content}"
+                                       FontSize="14"
+                                       TextColor="#444"
+                                       LineBreakMode="WordWrap"/>
+
+
+                                <HorizontalStackLayout Spacing="6">
+
+                                    <Label Text="{Binding AuthorName}"
+                                           FontSize="12"
+                                           TextColor="#777"/>
+
+                                    <Label Text="{Binding CreatedDate, StringFormat='{}{0:dd MMM yyyy HH:mm}'}"
+                                           FontSize="12"
+                                           TextColor="#777" />
+                                </HorizontalStackLayout>
                             </VerticalStackLayout>
                         </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+            
+            
         </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -35,6 +35,12 @@ namespace BytagrammAPI.Data
                 .HasForeignKey(p => p.CommunityId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<Post>()
+                .HasOne(p => p.Author)
+                .WithMany(p => p.Posts)
+                .HasForeignKey(p => p.AuthorId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             // 👇 SubscribedCommunities участвуют в many-to-many через промежуточную таблицу
             builder.Entity<Community>()
                 .HasMany(c => c.Subscribers)
