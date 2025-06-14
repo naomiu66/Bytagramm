@@ -5,8 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace Bytagramm.ViewModels.Post
 {
-    [QueryProperty(nameof(CommunityId), "communityId")]
-    public partial class CreatePostViewModel : ObservableObject
+    public partial class CreatePostViewModel : ObservableObject, IQueryAttributable
     {
         [ObservableProperty]
         private string title;
@@ -22,6 +21,14 @@ namespace Bytagramm.ViewModels.Post
         public CreatePostViewModel(IPostApiService postApiService) 
         {
             _postApiService = postApiService;
+        }
+
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if(query.TryGetValue("communityId", out var communityId)) 
+            {
+                CommunityId = communityId as string;
+            }
         }
 
         [RelayCommand]

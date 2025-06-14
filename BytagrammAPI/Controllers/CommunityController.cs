@@ -64,7 +64,7 @@ namespace BytagrammAPI.Controllers
             List<PostDto> dtoList = community.Posts
                .Select(p => new PostDto
                {
-                   Id = id,
+                   Id = p.Id,
                    Title = p.Title,
                    Content = p.Content,
                    AuthorId = p.AuthorId,

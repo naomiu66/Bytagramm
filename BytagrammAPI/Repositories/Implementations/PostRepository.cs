@@ -13,12 +13,16 @@ namespace BytagrammAPI.Repositories.Implementations
 
         public override async Task<IEnumerable<Post>> GetAllAsync()
         {
-            return await GetAllAsQueryable().Include(p => p.Author).ToListAsync();
+            return await GetAllAsQueryable()
+                .Include(p => p.Author)
+                .ToListAsync();
         }
 
         public override async Task<Post> GetByIdAsync(string id)
         {
-            return await GetAllAsQueryable().Include(p => p.Author).FirstAsync(p => p.Id == id);
+            return await GetAllAsQueryable()
+                .Include(p => p.Author)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
 

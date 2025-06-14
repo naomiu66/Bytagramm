@@ -10,8 +10,7 @@ using System.Collections.ObjectModel;
 
 namespace Bytagramm.ViewModels.Community
 {
-    [QueryProperty(nameof(CommunityId), "communityId")]
-    public partial class CommunityDetailsViewModel : ObservableObject
+    public partial class CommunityDetailsViewModel : ObservableObject, IQueryAttributable
     {
         [ObservableProperty]
         private string communityId;
@@ -29,7 +28,7 @@ namespace Bytagramm.ViewModels.Community
         private DateTime createdDate;
 
         [ObservableProperty]
-        ObservableCollection<PostDto> posts = new();
+        private ObservableCollection<PostDto> posts = new();
 
         [ObservableProperty]
         private bool isSubscribed;
@@ -94,42 +93,49 @@ namespace Bytagramm.ViewModels.Community
             }
         }
 
-        partial void OnCommunityIdChanged(string value)
+        public async void ApplyQueryAttributes(IDictionary<string, object> query)
         {
-            _ = LoadPageAsync(value);
-        }
-
-        private async Task LoadPageAsync(string id)
-        {
-            try
+            if(query.TryGetValue("communityId", out var communityId)) 
             {
-                var user = await _userApiService.GetCurrentUserAsync();
-
-                IsSubscribed = user.SubscribedCommunities.Any(c => c.Id == id);
-
-                var community = await _communityApiService.GetByIdAsync(id);
-                if (community != null)
+                try
                 {
-                    Title = community.Title;
-                    Description = community.Description;
-                    MembersCount = community.MembersCount;
-                    CreatedDate = community.CreatedDate;
-                }
-                var posts = community.Posts;
+                    var _communityId = communityId as string;
 
-                if (posts != null)
-                {
-                    Posts.Clear();
-                    foreach (var post in posts)
+                    CommunityId = _communityId;
+
+                    var user = await _userApiService.GetCurrentUserAsync();
+
+                    IsSubscribed = user.SubscribedCommunities.Any(c => c.Id == _communityId);
+
+                    var community = await _communityApiService.GetByIdAsync(_communityId);
+                    if (community != null)
                     {
-                        Posts.Add(post);
+                        Title = community.Title;
+                        Description = community.Description;
+                        MembersCount = community.MembersCount;
+                        CreatedDate = community.CreatedDate;
+                    }
+                    var posts = community.Posts;
+
+                    if (posts != null)
+                    {
+                        Posts.Clear();
+                        foreach (var post in posts)
+                        {
+                            Posts.Add(post);
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    await Shell.Current.DisplayAlert("Error", "Can not initialize community data", "OK");
+                }
             }
-            catch (Exception ex)
+            else 
             {
-                Console.WriteLine(ex.Message);
-                await Shell.Current.DisplayAlert("Error", "Can not initialize community data", "OK");
+                await Shell.Current.DisplayAlert("Error", "Community not found", "OK");
+                await Shell.Current.GoToAsync($"///{nameof(HomePage)}");
             }
         }
     }

@@ -13,12 +13,20 @@ namespace BytagrammAPI.Repositories.Implementations
 
         public override async Task<Community> GetByIdAsync(string id)
         {
-            return await GetAllAsQueryable().Include(c => c.Posts).Include(c => c.Subscribers).Include(c => c.Author).FirstAsync(c => c.Id == id);
+            return await GetAllAsQueryable()
+                .Include(c => c.Posts)
+                .Include(c => c.Subscribers)
+                .Include(c => c.Author)
+                .FirstAsync(c => c.Id == id);
         }
 
         public override async Task<IEnumerable<Community>> GetAllAsync()
         {
-            return await GetAllAsQueryable().Include(c => c.Posts).Include(c => c.Subscribers).Include(c => c.Author).ToListAsync();
+            return await GetAllAsQueryable()
+                .Include(c => c.Posts)
+                .Include(c => c.Subscribers)
+                .Include(c => c.Author)
+                .ToListAsync();
         }
     }
 }

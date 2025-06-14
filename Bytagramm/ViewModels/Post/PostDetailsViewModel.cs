@@ -1,10 +1,10 @@
 ﻿using Bytagramm.Services.Abstractions;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System.Threading.Tasks;
 
 namespace Bytagramm.ViewModels.Post
 {
-    [QueryProperty(nameof(PostId), "postId")]
-    public partial class PostDetailsViewModel : ObservableObject
+    public partial class PostDetailsViewModel : ObservableObject, IQueryAttributable
     {
         [ObservableProperty]
         private string postId;
@@ -34,29 +34,29 @@ namespace Bytagramm.ViewModels.Post
             _postApiService = postApiService;
         }
 
-        partial void OnPostIdChanged(string value)
+        public async void ApplyQueryAttributes(IDictionary<string, object> query)
         {
-            _ = LoadPageAsync(value);
-        }
-
-
-        private async Task LoadPageAsync(string id)
-        {
-            try
+            if (query.TryGetValue("postId", out var postId)) 
             {
-                var post = await _postApiService.GetByIdAsync(id);
+                var _postId = postId as string;
 
-                Title = post.Title;
-                Content = post.Content;
-                CommunityId = post.CommunityId;
-                AuthorId = post.AuthorId;
-                AuthorName = post.AuthorName;
-                CreatedDate = post.CreatedDate;
+                var post = await _postApiService.GetByIdAsync(_postId);
+
+                if (post != null) 
+                {
+                    Title = post.Title;
+                    Content = post.Content;
+                    CommunityId = post.CommunityId;
+                    AuthorId = post.AuthorId;
+                    AuthorName = post.AuthorName;
+                    CreatedDate = (DateTime)post.CreatedDate;
+                }
             }
-            catch (Exception ex)
+
+            else 
             {
-                Console.WriteLine(ex.Message);
-                await Shell.Current.DisplayAlert("Error", "Can not initialize post data", "OK");
+                await Shell.Current.DisplayAlert("Error", "Post not found", "OK");
+                await Shell.Current.GoToAsync($"///{nameof(HomePage)}");
             }
         }
     }
