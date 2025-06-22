@@ -7,10 +7,14 @@
              x:DataType="viewmodel:CommunitiesViewModel"
              BackgroundColor="#f9f9f9">
 
-    <VerticalStackLayout Padding="20" Spacing="15">
+    <Grid Padding="20" RowSpacing="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
         <!-- Header with title and button -->
-        <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+        <HorizontalStackLayout Grid.Row="0" Spacing="10" VerticalOptions="Center">
             <Label Text="Communities"
                    FontSize="24"
                    FontAttributes="Bold"
@@ -28,7 +32,8 @@
         </HorizontalStackLayout>
 
         <!-- Communities List -->
-        <CollectionView ItemsSource="{Binding Communities}"
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding Communities}"
                         SelectionMode="Single"
                         SelectionChangedCommand="{Binding OpenCommunityCommand}">
             <CollectionView.ItemTemplate>
@@ -62,5 +67,5 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>

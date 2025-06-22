@@ -66,36 +66,44 @@ namespace Bytagramm.ViewModels
 
         private async void LoadPageContent()
         {
-            var user = await _userApiService.GetCurrentUserAsync();
-            
-            if (user == null) 
+            try
             {
-                await Shell.Current.DisplayAlert("Error", "Unauthorized user", "OK");
+                var user = await _userApiService.GetCurrentUserAsync();
+
+                if (user == null)
+                {
+                    await Shell.Current.DisplayAlert("Error", "Unauthorized user", "OK");
+                    await Shell.Current.GoToAsync($"///{nameof(MainPage)}");
+                }
+
+                var communities = user.SubscribedCommunities;
+
+                var posts = await _postApiService.GetAllAsync();
+
+                if (communities != null)
+                {
+                    SubscribedCommunities.Clear();
+
+                    foreach (var community in communities)
+                    {
+                        SubscribedCommunities.Add(community);
+                    }
+                }
+
+                if (posts != null)
+                {
+                    Posts.Clear();
+
+                    foreach (var post in posts)
+                    {
+                        Posts.Add(post);
+                    }
+                }
+            }
+            catch (Exception ex) 
+            {
+                await Shell.Current.DisplayAlert("Error", "User Unauthorized", "OK");
                 await Shell.Current.GoToAsync($"///{nameof(MainPage)}");
-            }
-
-            var communities = user.SubscribedCommunities;
-
-            var posts = await _postApiService.GetAllAsync();
-
-            if (communities != null)
-            {
-                SubscribedCommunities.Clear();
-                
-                foreach (var community in communities)
-                {
-                    SubscribedCommunities.Add(community);
-                }
-            }
-
-            if(posts != null) 
-            {
-                Posts.Clear();
-
-                foreach(var post in posts) 
-                {
-                    Posts.Add(post);
-                }
             }
         }
     }

@@ -63,8 +63,13 @@
         </VerticalStackLayout>
 
         <!-- Feed — Posts -->
-        <VerticalStackLayout Grid.Column="1" Spacing="10">
-            <HorizontalStackLayout>
+        <Grid Grid.Column="1" RowSpacing="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
+            <HorizontalStackLayout Grid.Row="0" Padding="0,0,0,5">
                 <Label Text="Feed"
                        FontSize="22"
                        FontAttributes="Bold"
@@ -72,7 +77,8 @@
                        HorizontalOptions="StartAndExpand" />
             </HorizontalStackLayout>
 
-            <CollectionView ItemsSource="{Binding Posts}"
+            <CollectionView Grid.Row="1"
+                            ItemsSource="{Binding Posts}"
                             SelectionMode="Single"
                             SelectionChangedCommand="{Binding OpenPostCommand}">
                 <CollectionView.ItemTemplate>
@@ -114,7 +120,7 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-        </VerticalStackLayout>
+        </Grid>
     </Grid>
 
 </ContentPage>
